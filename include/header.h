@@ -28,13 +28,12 @@ typedef struct
 	piece_type piece; // quelle piece ?
 	move_type type;   // x ou deplacement ou speciaux
 	char	*eval;
+	char	comment[2];
 	char	destination[2];
 	char	col_hint;
 	char	row_hint;
-	bool color; // false == white / true == black
 	bool	is_check;
 	bool	is_mate;
-	void	*next;
 }			move;
 
 typedef struct
@@ -50,10 +49,13 @@ char		*ft_strchr(const char *s, int c);
 size_t		ft_strlen(const char *s);
 char		*ft_strjoin(char const *s1, char const *s2);
 char		*ft_substr(char const *s, unsigned int start, size_t len);
+int			ft_isdigit(int c);
+int			ft_isalpha(int c);
+
 // Chess
 int			read_game(int game_number, game_info *infos);
 void		init_board(int board[8][8]);
 void		print_board(int board[8][8], game_info *infos);
-void	free_game_info(game_info *game_info);
+void		free_game_info(game_info *game_info);
 
 #endif

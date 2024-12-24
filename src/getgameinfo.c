@@ -59,42 +59,12 @@ char	*get_game(int fd, int game_number)
 	return (game);
 }
 
-int	parse_moves(char *game, game_info *game_info, size_t len)
-// invalid read size
+void	split_headers(char *game, game_info *game_info)
 {
-	// move m;
-	int nb_moves;
-	int i;
-
-	// i = ft_strlen(game);
-	// printf("len = %d\n", len);
-	nb_moves = 0;
-	while (game[i] != '.' && game[i + 1] != ' ')
-		i--;
-	// printf("game[%d] = %c\n", i, game[i]);
-	while (game[i] > '9' && game[i] < '0')
-		i--;
-	// printf("game[%d] = %c\n", i, game[i]);
-	nb_moves = game[i] - '0';
-	i--;
-	// printf("game[%d] = %c\n", i, game[i]);
-	while (game[i] <= '9' && game[i] >= '0')
-	{
-		// printf("game[%d] = %c\n", i, game[i]);
-		nb_moves = nb_moves * 10 + (game[i] - '0');
-		i--;
-	}
-	// printf("nb_moves = %d\n", nb_moves);
-}
-
-void	split_game_infos(char *game, game_info *game_info, size_t len)
-{
-	int		nb_headers;
-	char	**headers;
-	int		i;
-	int		j;
-	int		start;
-	char	*moves;
+	int	i;
+	int	nb_headers;
+	int	j;
+	int	start;
 
 	i = 1;
 	nb_headers = 0;
@@ -124,12 +94,177 @@ void	split_game_infos(char *game, game_info *game_info, size_t len)
 		}
 		i++;
 	}
-	start = i + 1;
+}
+
+void	parse_moves(char *game, int i)
+{
+	move	m;
+	int		start;
+
+	if (game[i] == 'O')
+	{
+		if (game[i + 3] == '-')
+			m.type = LONG_CASTLE;
+		else
+			m.type = SHORT_CASTLE;
+	}
+	else
+		m.type = NORMAL;
+	if (game[i] >= 'a' && game[i] <= 'h')
+		m.piece = PAWN;
+	else
+	{
+		if (game[i] == 'N')
+			m.piece = KNIGHT;
+		else if (game[i] == 'B')
+			m.piece = BISHOP;
+		else if (game[i] == 'R')
+			m.piece = ROOK;
+		else if (game[i] == 'Q')
+			m.piece = QUEEN;
+		else if (game[i] == 'K')
+			m.piece = KING;
+		else
+			m.piece = NONE;
+		i++;
+	}
 	i++;
+	if (game[i] >= 'a' && game[i] <= 'h')
+	{
+		m.col_hint = game[i];
+		i++;
+	}
+	else if (game[i] >= '1' && game[i] <= '8')
+	{
+		m.row_hint = game[i] - 1;
+		i++;
+	}
+	else if (game[i] == 'x')
+	{
+		m.type = CAPTURE;
+		i++;
+	}
+	else if (ft_isdigit(game[i]) == 1)
+	{
+		m.destination[0] = game[i - 1];
+		m.destination[1] = game[i];
+	}
+	i++;
+	if (game[i] == '+')
+		m.is_check = true;
+	if (game[i] == '#')
+		m.is_mate = true;
+	i++;
+	if (game[i] == '!' || game[i] == '?')
+	{
+		m.comment[0] = game[i];
+		if (game[i + 1] == '!' || game[i + 1] == '?')
+			m.comment[1] = game[i + 1];
+		else
+			m.comment[1] = '\0'; // Pas propre sinon on met juste l'espace
+	}
+	if (game[i + 2] == '{')
+	{
+		while (game[i] != '%')
+			i++;
+		start = i + 1;
+		while (game[i] != ']')
+			i++;
+		m.eval = ft_substr(game, start, i - start);
+	}
+	else
+		m.eval = NULL;
+	// m.piece = PAWN;
+	// m.type = NORMAL;
+	// m.eval = NULL;
+	// m.comment[0] = 'a';
+	// m.comment[1] = '1';
+	// m.destination[0] = 'a';
+	// m.destination[1] = '1';
+	// m.col_hint = 'a';
+	// m.row_hint = '1';
+	// m.is_check = false;
+	// m.is_mate = true;
+
+	// return (m);
+}
+
+int	split_moves(char *game, game_info *game_info, size_t len)
+{
+	move	m;
+	int		nb_moves;
+	move	*moves;
+	int		i;
+	int		j;
+
+	nb_moves = 0;
+	while (game[len] != ' ' || game[len - 1] != '.')
+		len--;
+	while (ft_isdigit(game[len]) == 0)
+		len--;
+	while (ft_isdigit(game[len]) == 1)
+		len--;
+	nb_moves = game[len + 1] - '0';
+	len++;
+	while (ft_isdigit(game[len + 1]) == 1)
+	{
+		nb_moves = nb_moves * 10 + game[len + 1] - '0';
+		len++;
+	}
+	game_info->nb_moves = nb_moves * 2;
+	i = 0;
+	j = 0;
+	while (j < nb_moves * 2)
+	{
+		// Gerer les cas particuliers avant !
+		// Si ca merde sur les roques c'est ici
+		while (ft_isalpha(game[i]) == 0 && game[i] != 'O')
+			i++;
+		// moves[j] = 
+		parse_moves(game, i);
+		j++;
+		while (game[i] != ' ')
+			i++;
+		i++;
+		if (game[i] == '{')
+		{
+			while (game[i] != '}')
+				i++;
+			i += 2;
+			while (game[i] != ' ')
+				i++;
+		}
+	}
+	game_info->moves = malloc(sizeof(move) * nb_moves * 2);
+	i = 0;
+	while (i < nb_moves * 2)
+	{
+		game_info->moves[i] = moves[i];
+		i++;
+	}
+	return (0);
+}
+
+void	split_game_infos(char *game, game_info *game_info, size_t len)
+{
+	int		nb_headers;
+	char	**headers;
+	int		i;
+	int		j;
+	int		start;
+	char	*moves;
+
+	split_headers(game, game_info);
+	i = 1;
+	while (!(game[i] == '\n' && game[i - 1] == '\n'))
+		i++;
+	i++;
+	start = i;
 	while (game[i] != '\n')
 		i++;
 	moves = ft_substr(game, start, i - start);
-	printf("len game = %d\n", ft_strlen(game));
+	split_moves(moves, game_info, len);
+	// printf("len game = %d\n", ft_strlen(game));
 	// parse_moves(game, game_info, ft_strlen(game));
 	free(moves);
 }
@@ -145,6 +280,7 @@ void	free_game_info(game_info *game_info)
 		i++;
 	}
 	free(game_info->headers);
+	free(game_info->moves);
 }
 
 int	read_game(int game_number, game_info *game_info)
@@ -162,7 +298,6 @@ int	read_game(int game_number, game_info *game_info)
 	}
 	// getting a char * with headers and moves + filling game_info->headers
 	game = get_game(fd, game_number);
-	// printf("game = %s\n", game);
 	// spliting moves in a tab of structs inside game_info struct
 	split_game_infos(game, game_info, ft_strlen(game));
 	free(game);
