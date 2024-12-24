@@ -1,12 +1,11 @@
-#include "header.h"
 #include <stdlib.h>
 
 char	*ft_strchr(const char *s, int c)
 {
 	while (*s)
 	{
-		if (*s == (unsigned char) c)
-			return ((char *) s);
+		if (*s == (unsigned char)c)
+			return ((char *)s);
 		s++;
 	}
 	if ((unsigned char)c == '\0')
@@ -21,7 +20,7 @@ size_t	ft_strlen(const char *s)
 	i = 0;
 	while (s && s[i])
 		i++;
-	return ((size_t) i);
+	return ((size_t)i);
 }
 
 char	*ft_strjoin(char const *s1, char const *s2)
@@ -56,30 +55,26 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (joined);
 }
 
-void	*ft_memmove(void *dest, const void *src, size_t n)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	unsigned char	*des;
-	unsigned char	*sr;
+	size_t	i;
+	size_t	j;
+	char	*str;
 
-	des = dest;
-	sr = (unsigned char *)src;
-	if (src == NULL && dest == NULL)
+	str = malloc(sizeof(char) * (len + 1));
+	if (str == NULL)
 		return (NULL);
-	if (des < sr)
+	i = 0;
+	j = 0;
+	while (s[i])
 	{
-		while (n--)
-			*des++ = *sr++;
-	}
-	else
-	{
-		des += n;
-		sr += n;
-		while (n--)
+		if (i >= start && j < len)
 		{
-			des--;
-			sr--;
-			*des = *sr;
+			str[j] = s[i];
+			j++;
 		}
+		i++;
 	}
-	return (dest);
+	str[j] = '\0';
+	return (str);
 }

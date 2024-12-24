@@ -9,6 +9,7 @@ int	main(int ac, char **av)
   game_info game_info;
   int game_number;
   int e;
+  int i;
 
   if (ac != 1)
     game_number = atoi(av[1]);
@@ -19,17 +20,9 @@ int	main(int ac, char **av)
     printf("Error while parsing game\n");
     return (-1);
   }
-	init_board(board);
-	print_board(board, &game_info);
-  // int i = 0;
-  // while(i < game_info.nb_headers)
-  // {
-  //   printf("%s", game_info.headers[i]);
-  //   i++;
-  // }
-  // printf("%s", game_info.moves);
+	// init_board(board);
+	// print_board(board, &game_info);
   // get_game_info(buf, buf_len, game_info *gameinfo)
-  // get_pgn()
-	// On initiliase le board
+  free_game_info(&game_info);
 	return (0);
 }
