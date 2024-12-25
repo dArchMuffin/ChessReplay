@@ -44,7 +44,7 @@ void	print_board(int board[8][8], game_info *game_info)
 	headers = 0;
 	row = '8';
 	col = 'a';
-	write(1, "  |", 3);
+	write(1, "  ||", 4);
 	while (col <= 'h')
 	{
 		write(1, "  ", 2);
@@ -52,13 +52,14 @@ void	print_board(int board[8][8], game_info *game_info)
 		write(1, " |", 2);
 		col++;
 	}
-	write(1, "\n--+----+----+----+----+----+----+----+----+--\n", 47);
+	write(1, "|", 1);
+	write(1, "\n==++====+====+====+====+====+====+====+====++==\n", 50);
 	while (y >= 0)
 	{
 		while (row >= '1')
 		{
 			write(1, &row, 1);
-			write(1, " |", 2);
+			write(1, " ||", 3);
 			x = 0;
 			while (x <= 7)
 			{
@@ -67,8 +68,7 @@ void	print_board(int board[8][8], game_info *game_info)
 				write(1, " |", 2);
 				x++;
 			}
-			y--;
-			write(1, " ", 1);
+			write(1, "| ", 2);
 			write(1, &row, 1);
 			write(1, "\t", 1);
 			if (headers < game_info->nb_headers)
@@ -76,7 +76,12 @@ void	print_board(int board[8][8], game_info *game_info)
 					ft_strlen(game_info->headers[headers]));
 			write(1, "\n", 1);
 			headers++;
-			write(1, "--+----+----+----+----+----+----+----+----+--", 46);
+			if (y > 0)
+				write(1, "--++----+----+----+----+----+----+----+----++--", 47);
+			else
+				write(1, "==++====+====+====+====+====+====+====+====++==",
+					48);
+			y--;
 			write(1, "\t", 1);
 			if (headers < game_info->nb_headers)
 				write(1, game_info->headers[headers],
@@ -87,14 +92,15 @@ void	print_board(int board[8][8], game_info *game_info)
 		}
 	}
 	col = 'a';
-	write(1, "  | ", 4);
+	write(1, "  ||", 4);
 	while (col <= 'h')
 	{
-		write(1, " ", 1);
+		write(1, "  ", 2);
 		write(1, &col, 1);
-		write(1, " | ", 3);
+		write(1, " |", 2);
 		col++;
 	}
+	write(1, "|", 1);
 	write(1, "\n", 1);
 }
 
@@ -118,7 +124,7 @@ void	put_piece_in(piece_type piece, int board[8][8], char *dest, int color)
 		board[dest[1]][dest[0]] - 32; // ICI !
 }
 
-void no_hint_case(game_info *infos, int board[8][8], char p, int color)
+void	no_hint_case(game_info *infos, int board[8][8], char p, int color)
 {
 	if (infos->moves[color].piece == KNIGHT && !(infos->moves[color].row_hint)
 		&& !(infos->moves[color].col_hint))
@@ -180,7 +186,7 @@ void no_hint_case(game_info *infos, int board[8][8], char p, int color)
 	}
 }
 
-void clean_origin(game_info *infos, int board[8][8], int color)
+void	clean_origin(game_info *infos, int board[8][8], int color)
 {
 	char	p;
 
@@ -218,7 +224,6 @@ void clean_origin(game_info *infos, int board[8][8], int color)
 
 void	update_board(game_info *infos, int board[8][8], int color)
 {
-
 	put_piece_in(infos->moves[color].piece, board,
 		infos->moves[color].destination, color);
 	clean_origin(infos, board, color);

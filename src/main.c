@@ -1,5 +1,5 @@
 #include "header.h"
-#include <stdio.h>
+#include <stdio.h> //libft printf
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -10,12 +10,10 @@ int	main(int ac, char **av)
 	int			game_number;
 	int			e;
 	int			i;
-	bool		gameover;
 	int			turn;
 
-	gameover = true;
 	if (ac != 1)
-		game_number = atoi(av[1]); // coder atoi
+		game_number = atoi(av[1]); // libft atoi
 	else
 		game_number = 0;
 	e = read_game(game_number, &game_info);
