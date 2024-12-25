@@ -100,8 +100,7 @@ void	print_board(int board[8][8], game_info *game_info)
 		write(1, " |", 2);
 		col++;
 	}
-	write(1, "|", 1);
-	write(1, "\n", 1);
+	write(1, "|\n", 2);
 }
 
 void	put_piece_in(piece_type piece, int board[8][8], char *dest, int color)

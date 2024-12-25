@@ -33,8 +33,8 @@ void	print_piece_in(int board[8][8], char dest[2]) //To fix
         printf("bishop ");
     else if (board[dest[1]][dest[0]] == 'q' || board[dest[1]][dest[0]] == 'Q')
         printf("queen ");
-    else 
-        printf("ERROR : [board[6][5] = %c | dest[1] = %d | dest[0] = %d]", board[6][5], dest[1] - '0' - 1, dest[0] - 'a');
+    // else 
+    //     printf("ERROR : [board[6][5] = %c | dest[1] = %d | dest[0] = %d]", board[6][5], dest[1] - '0' - 1, dest[0] - 'a');
 }
 
 // Renvoyer les coord de la case d'origine de la piece ?
@@ -43,15 +43,15 @@ int	*write_move(game_info *infos, int board[8][8], int color)
 {
 	int i;
 
-	if (infos->moves[color].is_mate == true) //Bug : n'affiche pas le move, ni w/b win
+	if (infos->moves[color].is_mate == true)
 	{
 		if (color % 2 == 0)
-			printf("\nWhite win");
+			printf("\nWhite win\n");
 		else
-			printf("\nBlack win");
+			printf("\nBlack win\n");
 		return (0);
 	}
-	// color of player's move
+	// color of player's move ->fct ?
 	if (color % 2 == 0)
 		printf("\nWhite ");
 	else
@@ -61,33 +61,25 @@ int	*write_move(game_info *infos, int board[8][8], int color)
 		printf("short castle ");
 	if (infos->moves[color].type == LONG_CASTLE)
 		printf("long castle ");
-	// piece moving
+	// piece to move
 	print_piece(infos, color);
 	// type of action
 	if (infos->moves[color].type == NORMAL)
-    {
-		printf("moves to ");
-        printf("%s", infos->moves[color].destination);
-    }
+		printf("moves to %s", infos->moves[color].destination);
 	else if (infos->moves[color].type == CAPTURE)
 	{
 		printf("takes ");
 		print_piece_in(board, infos->moves[color].destination);
-		// la piece a la destination
-		printf("in ");
-		printf("%s", infos->moves[color].destination); //Bug ?
+		printf("in %s", infos->moves[color].destination);
 	}
 	else
 		printf("error in type\n");
-	// if (infos->moves[color].destination[0])
-	// 	printf("%s", infos->moves[color].destination);
-	// else
-	// 	printf("Error : no dest found\n");
+	//check / comment / evals
 	if (infos->moves[color].is_check == true)
 		printf(". Check !");
 	else
 		printf(".");
-	// Comment
+	// Comment ->fct 
 	if (infos->moves[color].comment)
 	{
 		printf("\n");

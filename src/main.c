@@ -26,7 +26,7 @@ int	main(int ac, char **av)
 	print_board(board, &game_info);
 	turn = 1;
 	i = 0;
-	while (1) // pas sûr ...
+	while (1)
 	{
 		if (turn > game_info.nb_moves / 2)
 			break ;
