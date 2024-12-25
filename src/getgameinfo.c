@@ -100,7 +100,11 @@ move	parse_moves(char *game, int i)
 {
 	move	m;
 	int		start;
+	int		j;
 
+	// bricolage a revoir
+	// 1 : cas où on cherche un char dans le move : ADD 1/2 1/2 !
+	// O : Castles
 	if (game[i] == 'O')
 	{
 		if (game[i + 3] == '-')
@@ -108,8 +112,60 @@ move	parse_moves(char *game, int i)
 		else
 			m.type = SHORT_CASTLE;
 	}
-	else
+	//+ : check
+	start = i;
+	while (game[i] && game[i] != ' ')
+	{
+		if (game[i] == '+')
+		{
+			m.is_check = true;
+			break ;
+		}
+		i++;
+	}
+	if (game[i] == ' ')
+		m.is_check = false;
+	// x : capture
+	i = start;
+	while (game[i] && game[i] != ' ')
+	{
+		if (game[i] == 'x')
+		{
+			m.type = CAPTURE;
+			break ;
+		}
+		i++;
+	}
+	if (game[i] == ' ')
 		m.type = NORMAL;
+	//# : checkmate
+	i = start;
+	while (game[i] && game[i] != ' ')
+	{
+		if (game[i] == '#')
+		{
+			m.is_mate = true;
+			break ;
+		}
+		i++;
+	}
+	if (game[i] == ' ')
+		m.is_mate = false;
+	//! ? : comments
+	i = start;
+	j = 0;
+	while (game[i] && game[i] != ' ')
+	{
+		if (game[i] == '!' || game[i] == '?')
+		{
+			m.comment[j] = game[i];
+			j++;
+		}
+		m.comment[j] = '\0';
+		i++;
+	}
+	i = start;
+	// 2 : which piece is moving ?
 	if (game[i] >= 'a' && game[i] <= 'h')
 		m.piece = PAWN;
 	else
@@ -129,6 +185,7 @@ move	parse_moves(char *game, int i)
 		i++;
 	}
 	i++;
+	// is there an hint ? (N/R/B/Q) //TODO !
 	if (game[i] >= 'a' && game[i] <= 'h')
 	{
 		m.col_hint = game[i];
@@ -136,34 +193,47 @@ move	parse_moves(char *game, int i)
 	}
 	else if (game[i] >= '1' && game[i] <= '8')
 	{
-		m.row_hint = game[i] - 1; //ICI !
+		m.row_hint = game[i] - 1; // ICI !
 		i++;
 	}
-	else if (game[i] == 'x')
+	// Double hint to do !
+	// Bricolage
+	// m.destination[0] = '\0';
+	// m.destination[1] = '\0';
+	// m.destination[2] = '\0';
+	// On récupère la destination
+	if (m.type == NORMAL)
 	{
-		m.type = CAPTURE;
-		i++;
-	}
-	else if (ft_isdigit(game[i]) == 1)
-	{
-		m.destination[0] = game[i - 1];
-		m.destination[1] = game[i];
-	}
-	i++;
-	if (game[i] == '+')
-		m.is_check = true;
-	if (game[i] == '#')
-		m.is_mate = true;
-	i++;
-	if (game[i] == '!' || game[i] == '?')
-	{
-		m.comment[0] = game[i];
-		if (game[i + 1] == '!' || game[i + 1] == '?')
-			m.comment[1] = game[i + 1];
+		if (m.piece == PAWN)
+		{
+			m.destination[0] = game[start];
+			m.destination[1] = game[start + 1];
+			m.destination[2] = '\0';
+		}
 		else
-			m.comment[1] = '\0'; // Pas propre sinon on met juste l'espace
+		{
+			m.destination[0] = game[start + 1];
+			m.destination[1] = game[start + 2];
+			m.destination[2] = '\0';
+		}
 	}
-	if (game[i + 2] == '{')
+	else if (m.type == CAPTURE)
+	{
+		// printf("\ndest = %s\n", m.destination);
+		while (game[i] != ' ')
+			i++;
+		while (ft_isalpha(game[i]) != 1)
+			i--;
+		m.destination[0] = game[i];
+		m.destination[1] = game[i + 1];
+		// m.destination[2] = '\0';
+		// printf("dest = %s\n", m.destination);
+	}
+	// is there an eval ? (#-2 / eval -2.34)
+	i = start;
+	while (game[i] != ' ')
+		i++;
+	if (game[i + 1] == '{')
 	{
 		while (game[i] != '%')
 			i++;
@@ -174,6 +244,7 @@ move	parse_moves(char *game, int i)
 	}
 	else
 		m.eval = NULL;
+	// Bricolage a revoir :
 	// m.piece = PAWN;
 	// m.type = NORMAL;
 	// m.eval = NULL;
@@ -302,7 +373,7 @@ int	read_game(int game_number, game_info *game_info)
 	int nl;
 
 	// opening file with game(s)
-	fd = open("gametest2.txt", O_RDONLY); //Ajouter une option argv
+	fd = open("gametest2.txt", O_RDONLY); // Ajouter une option argv
 	if (fd < 0)
 	{
 		printf("Error while opening a file\n");

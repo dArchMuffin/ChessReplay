@@ -57,5 +57,7 @@ int			read_game(int game_number, game_info *infos);
 void		init_board(int board[8][8]);
 void		print_board(int board[8][8], game_info *infos);
 void		free_game_info(game_info *game_info);
+int			*write_move(game_info *infos, int board[8][8], int color);
+void	update_board(game_info *infos, int board[8][8], int color);
 
 #endif
