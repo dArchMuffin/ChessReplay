@@ -96,7 +96,7 @@ void	split_headers(char *game, game_info *game_info)
 	}
 }
 
-void	parse_moves(char *game, int i)
+move	parse_moves(char *game, int i)
 {
 	move	m;
 	int		start;
@@ -136,7 +136,7 @@ void	parse_moves(char *game, int i)
 	}
 	else if (game[i] >= '1' && game[i] <= '8')
 	{
-		m.row_hint = game[i] - 1;
+		m.row_hint = game[i] - 1; //ICI !
 		i++;
 	}
 	else if (game[i] == 'x')
@@ -185,8 +185,7 @@ void	parse_moves(char *game, int i)
 	// m.row_hint = '1';
 	// m.is_check = false;
 	// m.is_mate = true;
-
-	// return (m);
+	return (m);
 }
 
 int	split_moves(char *game, game_info *game_info, size_t len)
@@ -198,20 +197,22 @@ int	split_moves(char *game, game_info *game_info, size_t len)
 	int		j;
 
 	nb_moves = 0;
-	while (game[len] != ' ' || game[len - 1] != '.')
+	while ((len > 0) && (game[len] != ' ' || game[len - 1] != '.'))
 		len--;
-	while (ft_isdigit(game[len]) == 0)
+	// cas particuliers a gérer ici
+	while (ft_isdigit(game[len]) == 0 && len > 0)
 		len--;
-	while (ft_isdigit(game[len]) == 1)
+	while (ft_isdigit(game[len]) == 1 && len > 0)
 		len--;
 	nb_moves = game[len + 1] - '0';
 	len++;
-	while (ft_isdigit(game[len + 1]) == 1)
+	while (ft_isdigit(game[len + 1]) == 1 && len > 0)
 	{
 		nb_moves = nb_moves * 10 + game[len + 1] - '0';
 		len++;
 	}
 	game_info->nb_moves = nb_moves * 2;
+	moves = malloc(sizeof(move) * nb_moves * 2 + 1);
 	i = 0;
 	j = 0;
 	while (j < nb_moves * 2)
@@ -220,8 +221,8 @@ int	split_moves(char *game, game_info *game_info, size_t len)
 		// Si ca merde sur les roques c'est ici
 		while (ft_isalpha(game[i]) == 0 && game[i] != 'O')
 			i++;
-		// moves[j] = 
-		parse_moves(game, i);
+		moves[j] = parse_moves(game, i);
+		// moves [j] = parse_moves() seg fault
 		j++;
 		while (game[i] != ' ')
 			i++;
@@ -242,6 +243,7 @@ int	split_moves(char *game, game_info *game_info, size_t len)
 		game_info->moves[i] = moves[i];
 		i++;
 	}
+	free(moves);
 	return (0);
 }
 
@@ -263,7 +265,7 @@ void	split_game_infos(char *game, game_info *game_info, size_t len)
 	while (game[i] != '\n')
 		i++;
 	moves = ft_substr(game, start, i - start);
-	split_moves(moves, game_info, len);
+	split_moves(moves, game_info, ft_strlen(moves));
 	// printf("len game = %d\n", ft_strlen(game));
 	// parse_moves(game, game_info, ft_strlen(game));
 	free(moves);
@@ -273,6 +275,16 @@ void	free_game_info(game_info *game_info)
 {
 	int	i;
 
+	i = 0;
+	while (i < game_info->nb_moves)
+	{
+		if (game_info->moves[i].eval)
+		{
+			free(game_info->moves[i].eval);
+			game_info->moves[i].eval = NULL;
+		}
+		i++;
+	}
 	i = 0;
 	while (i < game_info->nb_headers)
 	{
@@ -290,7 +302,7 @@ int	read_game(int game_number, game_info *game_info)
 	int nl;
 
 	// opening file with game(s)
-	fd = open("gametest2.txt", O_RDONLY);
+	fd = open("gametest2.txt", O_RDONLY); //Ajouter une option argv
 	if (fd < 0)
 	{
 		printf("Error while opening a file\n");

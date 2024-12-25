@@ -20,9 +20,8 @@ int	main(int ac, char **av)
     printf("Error while parsing game\n");
     return (-1);
   }
-	// init_board(board);
-	// print_board(board, &game_info);
-  // get_game_info(buf, buf_len, game_info *gameinfo)
+	init_board(board);
+	print_board(board, &game_info);
   free_game_info(&game_info);
 	return (0);
 }

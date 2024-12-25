@@ -77,7 +77,10 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 
 	str = malloc(sizeof(char) * (len + 1));
 	if (str == NULL)
+	{
+		// free((char *)s);
 		return (NULL);
+	}
 	i = 0;
 	j = 0;
 	while (s[i])
@@ -90,5 +93,6 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		i++;
 	}
 	str[j] = '\0';
+	// free((char *)s);
 	return (str);
 }
