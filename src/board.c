@@ -76,7 +76,7 @@ void	print_board(int board[8][8], game_info *game_info)
 					ft_strlen(game_info->headers[headers]));
 			write(1, "\n", 1);
 			headers++;
-			write(1, "--+----+----+----+----+----+----+----+----+--", 47);
+			write(1, "--+----+----+----+----+----+----+----+----+--", 46);
 			write(1, "\t", 1);
 			if (headers < game_info->nb_headers)
 				write(1, game_info->headers[headers],
