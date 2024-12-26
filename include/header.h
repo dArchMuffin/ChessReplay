@@ -27,9 +27,10 @@ typedef struct
 {
 	piece_type piece; // quelle piece ?
 	move_type type;   // x ou deplacement ou speciaux
+	char	*pgn;
 	char	*eval;
-	char	comment[2];
-	char	destination[2];
+	char	comment[3];
+	char	destination[3];
 	char	col_hint;
 	char	row_hint;
 	bool	is_check;

@@ -22,7 +22,7 @@ void	print_piece_in(int board[8][8], char dest[2]) //To fix
     dest[1] = dest[1] - '0' - 1;
     dest[0] = dest[0] - 'a';
 	if (board[dest[1]][dest[0]] == ' ')
-		printf("no piece found ");
+		printf("[no piece found] ");
 	else if (board[dest[1]][dest[0]] == 'p' || board[dest[1]][dest[0]] == 'P')
 		printf("pawn ");
 	else if (board[dest[1]][dest[0]] == 'r' || board[dest[1]][dest[0]] == 'R')
@@ -33,6 +33,7 @@ void	print_piece_in(int board[8][8], char dest[2]) //To fix
         printf("bishop ");
     else if (board[dest[1]][dest[0]] == 'q' || board[dest[1]][dest[0]] == 'Q')
         printf("queen ");
+	printf("in %c%c", dest[0] + 'a', dest[1] + 1 + '0');
     // else 
     //     printf("ERROR : [board[6][5] = %c | dest[1] = %d | dest[0] = %d]", board[6][5], dest[1] - '0' - 1, dest[0] - 'a');
 }
@@ -70,7 +71,6 @@ int	*write_move(game_info *infos, int board[8][8], int color)
 	{
 		printf("takes ");
 		print_piece_in(board, infos->moves[color].destination);
-		printf("in %s", infos->moves[color].destination);
 	}
 	else
 		printf("error in type\n");
@@ -79,6 +79,7 @@ int	*write_move(game_info *infos, int board[8][8], int color)
 		printf(". Check !");
 	else
 		printf(".");
+	printf("\t #%d : [%s]", color, infos->moves[color].pgn);
 	// Comment ->fct 
 	if (infos->moves[color].comment)
 	{

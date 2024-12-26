@@ -101,8 +101,16 @@ move	parse_moves(char *game, int i)
 	move	m;
 	int		start;
 	int		j;
+	int		len;
 
 	// bricolage a revoir
+	// on copie le code pgn dans la structure
+	start = i;
+	while (game[i] != ' ')
+		i++;
+	m.pgn = ft_substr(game, start, i - start);
+	len = ft_strlen(m.pgn);
+	i = start;
 	// 1 : cas où on cherche un char dans le move : ADD 1/2 1/2 !
 	// O : Castles
 	if (game[i] == 'O')
@@ -113,7 +121,7 @@ move	parse_moves(char *game, int i)
 			m.type = SHORT_CASTLE;
 	}
 	//+ : check
-	start = i;
+	i = start;
 	while (game[i] && game[i] != ' ')
 	{
 		if (game[i] == '+')
@@ -154,16 +162,16 @@ move	parse_moves(char *game, int i)
 	//! ? : comments
 	i = start;
 	j = 0;
-	while (game[i] && game[i] != ' ')
+	while (i - start < len && game[i] != ' ')
 	{
 		if (game[i] == '!' || game[i] == '?')
 		{
 			m.comment[j] = game[i];
 			j++;
 		}
-		m.comment[j] = '\0';
 		i++;
 	}
+	m.comment[j] = '\0';
 	i = start;
 	// 2 : which piece is moving ?
 	if (game[i] >= 'a' && game[i] <= 'h')
@@ -184,52 +192,44 @@ move	parse_moves(char *game, int i)
 			m.piece = NONE;
 		i++;
 	}
-	i++;
-	// is there an hint ? (N/R/B/Q) //TODO !
-	if (game[i] >= 'a' && game[i] <= 'h')
+	i = start;
+	// is there an hint ? (N/R/B/Q) //TODO ! //Buggy
+	if (m.piece == ROOK || m.piece == BISHOP || m.piece == KNIGHT || m.piece == QUEEN)
 	{
-		m.col_hint = game[i];
-		i++;
+		while (game[i] && game[i] != ' ')
+			i++;
+		while (ft_isdigit(game[i]) == 0)
+			i--;
+		i -= 2;
+		if (game[i] == 'x')
+			i--;
+		if (ft_isdigit(game[i]) == 1)
+			m.row_hint = game[i];
+		else if (game[i] >= 'a' && game[i] <= 'h')
+			m.col_hint = game[i];
+		i--;
+		if (i != start && game[i] >= 'a' && game[i] <= 'h')
+			m.col_hint = game[i];
 	}
-	else if (game[i] >= '1' && game[i] <= '8')
+	else //Tous les autres cas on n'aura pas d'indice ? cas particulier du pion ?
 	{
-		m.row_hint = game[i] - 1; // ICI !
-		i++;
+		m.row_hint = '\0';
+		m.col_hint = '\0';
 	}
+	i = start;
 	// Double hint to do !
-	// Bricolage
-	// m.destination[0] = '\0';
-	// m.destination[1] = '\0';
-	// m.destination[2] = '\0';
 	// On récupère la destination
-	if (m.type == NORMAL)
+	if (m.type == NORMAL || m.type == CAPTURE)
 	{
-		if (m.piece == PAWN)
-		{
-			m.destination[0] = game[start];
-			m.destination[1] = game[start + 1];
-			m.destination[2] = '\0';
-		}
-		else
-		{
-			m.destination[0] = game[start + 1];
-			m.destination[1] = game[start + 2];
-			m.destination[2] = '\0';
-		}
-	}
-	else if (m.type == CAPTURE)
-	{
-		// printf("\ndest = %s\n", m.destination);
 		while (game[i] != ' ')
 			i++;
-		while (ft_isalpha(game[i]) != 1)
+		while (ft_isdigit(game[i]) == 0)
 			i--;
-		m.destination[0] = game[i];
-		m.destination[1] = game[i + 1];
-		// m.destination[2] = '\0';
-		// printf("dest = %s\n", m.destination);
+		m.destination[0] = game[i - 1];
+		m.destination[1] = game[i];
+		m.destination[2] = '\0'; 
+
 	}
-	// is there an eval ? (#-2 / eval -2.34)
 	i = start;
 	while (game[i] != ' ')
 		i++;
@@ -293,7 +293,6 @@ int	split_moves(char *game, game_info *game_info, size_t len)
 		while (ft_isalpha(game[i]) == 0 && game[i] != 'O')
 			i++;
 		moves[j] = parse_moves(game, i);
-		// moves [j] = parse_moves() seg fault
 		j++;
 		while (game[i] != ' ')
 			i++;
@@ -312,6 +311,25 @@ int	split_moves(char *game, game_info *game_info, size_t len)
 	while (i < nb_moves * 2)
 	{
 		game_info->moves[i] = moves[i];
+		i++;
+	}
+	// debug
+	i = 0;
+	while (i < nb_moves * 2)
+	{	
+		if (i == 10 || i == 51 || i == 49 || i == 48 || i == 47 || i == 45 || i == 40 || i == 39 || i == 38 || i == 37 || i == 33 || i == 22 || i == 21 || i == 17)
+		{
+		printf("moves[%d]\n", i);
+		printf("pgn = %s\n", game_info->moves[i].pgn);
+		printf("eval : %s\n", game_info->moves[i].eval);
+		printf("comment : %s\n", game_info->moves[i].comment); // m9 : "??b6"
+		printf("dest : %s\n", game_info->moves[i].destination);
+		// move[10] : dest : f7f5
+		printf("col_hint : %c\n", game_info->moves[i].col_hint);
+		printf("row_hint : %c\n", game_info->moves[i].row_hint); // bug
+		printf("is_check : %d\n", game_info->moves[i].is_check);
+		printf("is_mate : %d\n\n", game_info->moves[i].is_mate);
+		}
 		i++;
 	}
 	free(moves);
