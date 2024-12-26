@@ -71,7 +71,7 @@ void		row_hint_case(game_info *infos, int board[8][8], int move_idx);
 void		clean_origin(game_info *infos, int board[8][8], int move_idx);
 int			clean_knight(char p, char start_y, char start_x, int board[8][8],
 				int move_idx);
-int			clean_piece_in_lines(char p, char start_y, char start_x,
+int			clean_piece_in_lines( char p, char start_y, char start_x,
 				int board[8][8], int move_idx);
 int	clean_piece_in_diags(char p, char start_y, char start_x, int board[8][8],
 							int move_idx); // A racourcir !

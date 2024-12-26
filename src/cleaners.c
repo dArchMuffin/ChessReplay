@@ -10,7 +10,6 @@ int	clean_knight(char p, char start_y, char start_x, int board[8][8],
 	y = start_y - 'a';
 	x = start_x - '0' - 1;
 	printf("x = %d | y = %d\n", x, y);
-	printf("target : board[1][5] = %c\n", board[1][5]);
 	if (move_idx % 2 != 0)
 		p -= 32;
 	if (x - 2 >= 0 && y + 1 <= 7)
@@ -78,7 +77,7 @@ int	clean_knight(char p, char start_y, char start_x, int board[8][8],
 		}
 	}
 }
-
+// invalid read of size ?
 int	clean_king(char p, char start_y, char start_x, int board[8][8],
 		int move_idx)
 {
@@ -131,8 +130,8 @@ int	clean_king(char p, char start_y, char start_x, int board[8][8],
 	}
 }
 
-int	clean_piece_in_lines(char p, char start_y, char start_x, int board[8][8],
-		int move_idx)
+int	clean_piece_in_lines(char p, char start_y, char start_x,
+		int board[8][8], int move_idx)
 {
 	int	y;
 	int	x;
@@ -142,29 +141,56 @@ int	clean_piece_in_lines(char p, char start_y, char start_x, int board[8][8],
 	printf("x = %d | y = %d\n", x, y);
 	if (move_idx % 2 != 0)
 		p -= 32;
-	// in col
-	y = 0;
-	while (y <= 7)
-	{
-		if (board[x][y] == p) //&& is_on_sight(start_y) == 1
-		{
-			board[x][y] = ' ';
-			return (0);
-		}
-		y++;
-	}
-	y = start_y - 'a';
-	// in row
-	x = 0;
+	// in col up
 	while (x <= 7)
 	{
-		printf("row x+ : board[%d][%d] = %c\n", x, y, board[x][y]);
+		if (board[x][y] != ' ' && board[x][y] != p)
+			break ;
 		if (board[x][y] == p)
 		{
 			board[x][y] = ' ';
 			return (0);
 		}
 		x++;
+	}
+	// in col down
+	x = start_x - '0' - 1;
+	while (x >= 0)
+	{
+		if (board[x][y] != ' ' && board[x][y] != p)
+			break ;
+		if (board[x][y] == p)
+		{
+			board[x][y] = ' ';
+			return (0);
+		}
+		x--;
+	}
+	x = start_x - '0' - 1;
+	// in row left
+	while (y >= 0)
+	{
+		if (board[x][y] != ' ' && board[x][y] != p)
+			break ;
+		if (board[x][y] == p)
+		{
+			board[x][y] = ' ';
+			return (0);
+		}
+		y--;
+	}
+	y = start_y - 'a';
+	// in row right
+	while (y <= 7)
+	{
+		if (board[x][y] != ' ' && board[x][y] != p)
+			break ;
+		if (board[x][y] == p)
+		{
+			board[x][y] = ' ';
+			return (0);
+		}
+		y++;
 	}
 	printf("%c not found in lines\n", p);
 	return (1);

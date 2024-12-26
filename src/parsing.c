@@ -173,6 +173,7 @@ move	parse_moves(char *game, int i)
 	}
 	m.comment[j] = '\0';
 	i = start;
+	//Manque promotion
 	// 2 : which piece is moving ?
 	if (game[i] >= 'a' && game[i] <= 'h')
 		m.piece = PAWN;
@@ -356,6 +357,8 @@ void	free_game_info(game_info *game_info)
 			free(game_info->moves[i].eval);
 			game_info->moves[i].eval = NULL;
 		}
+		free(game_info->moves[i].pgn);
+		game_info->moves[i].pgn = NULL;
 		i++;
 	}
 	i = 0;

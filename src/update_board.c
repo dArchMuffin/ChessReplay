@@ -164,8 +164,8 @@ void	col_hint_case(game_info *infos, int board[8][8], int move_idx)
 	}
 }
 
-void	row_hint_case(game_info *infos, int board[8][8], int move_idx)
 // edge case pawn ?
+void	row_hint_case(game_info *infos, int board[8][8], int move_idx)
 {
 	if (infos->moves[move_idx].piece == KNIGHT)
 	{
