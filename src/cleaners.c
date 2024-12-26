@@ -86,7 +86,7 @@ int	clean_king(char p, char start_y, char start_x, int board[8][8],
 
 	y = start_y - 'a';
 	x = start_x - '0' - 1;
-	printf("x = %d | y = %d\n", x, y);
+	// printf("x = %d | y = %d\n", x, y);
 	if (move_idx % 2 != 0)
 		p -= 32;
 	x = x - 1;
@@ -192,7 +192,7 @@ int	clean_piece_in_lines(char p, char start_y, char start_x, int board[8][8],
 			return (0);
 		}
 	}
-	printf("%c not found in lines\n", p);
+	// printf("%c not found in lines\n", p);
 	return (1);
 }
 
@@ -211,7 +211,7 @@ int	clean_piece_in_diags(char p, char start_y, char start_x, int board[8][8],
 	{
 		y--;
 		x--;
-		printf("diag bot left : board[%d][%d] = %c\n", x, y, board[x][y]);
+		// printf("diag bot left : board[%d][%d] = %c\n", x, y, board[x][y]);
 		if (board[x][y] != ' ' && board[x][y] != p)
 			break ;
 		if (board[x][y] == p)
@@ -227,7 +227,7 @@ int	clean_piece_in_diags(char p, char start_y, char start_x, int board[8][8],
 	{
 		y++;
 		x++;
-		printf("diag top right : board[%d][%d] = %c\n", x, y, board[x][y]);
+		// printf("diag top right : board[%d][%d] = %c\n", x, y, board[x][y]);
 		if (board[x][y] != ' ' && board[x][y] != p)
 			break ;
 		if (board[x][y] == p)
@@ -243,7 +243,7 @@ int	clean_piece_in_diags(char p, char start_y, char start_x, int board[8][8],
 	{
 		y--;
 		x++;
-		printf("diag top left : board[%d][%d] = %c\n", x, y, board[x][y]);
+		// printf("diag top left : board[%d][%d] = %c\n", x, y, board[x][y]);
 		if (board[x][y] != ' ' && board[x][y] != p)
 			break ;
 		if (board[x][y] == p)
@@ -259,7 +259,7 @@ int	clean_piece_in_diags(char p, char start_y, char start_x, int board[8][8],
 	{
 		y++;
 		x--;
-		printf("diag bot right : board[%d][%d] = %c\n", x, y, board[x][y]);
+		// printf("diag bot right : board[%d][%d] = %c\n", x, y, board[x][y]);
 		if (board[x][y] != ' ' && board[x][y] != p)
 			break ;
 		if (board[x][y] == p)
@@ -268,7 +268,7 @@ int	clean_piece_in_diags(char p, char start_y, char start_x, int board[8][8],
 			return (0);
 		}
 	}
-	printf("%c not found in diag\n", p);
+	// printf("%c not found in diag\n", p);
 	return (1);
 }
 

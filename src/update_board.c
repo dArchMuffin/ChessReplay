@@ -78,13 +78,13 @@ void	col_hint_case(game_info *infos, int board[8][8], int move_idx)
 		printf("%d\n", infos->moves[move_idx].destination[0] - 'a' - y);
 		if ((infos->moves[move_idx].destination[0] - 'a') - y == -2)
 		{
-			printf("board[%d][%d] = %c\n", x - 1, y, board[x - 1][y]);
+			// printf("board[%d][%d] = %c\n", x - 1, y, board[x - 1][y]);
 			if (board[x - 1][y] == p)
 			{
 				board[x - 1][y] = ' ';
 				return ;
 			}
-			printf("board[%d][%d] = %c\n", x + 1, y, board[x + 1][y]);
+			// printf("board[%d][%d] = %c\n", x + 1, y, board[x + 1][y]);
 			if (board[x + 1][y] == p)
 			{
 				board[x + 1][y] = ' ';
@@ -183,7 +183,7 @@ void	row_hint_case(game_info *infos, int board[8][8], int move_idx)
 	{
 		if (clean_piece_in_diags('b', infos->moves[move_idx].destination[0],
 				infos->moves[move_idx].destination[1], board, move_idx) == 1)
-			printf("ERROR : BISHOP not found !\n"); // no found
+			printf("ERROR : BISHOP not found !\n");
 	}
 	if (infos->moves[move_idx].piece == QUEEN)
 	{
