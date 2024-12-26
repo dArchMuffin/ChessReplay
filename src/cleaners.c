@@ -1,82 +1,6 @@
 #include "header.h"
 #include <stdio.h> //libft
 
-int	clean_knight(char p, char start_y, char start_x, int board[8][8],
-		int move_idx)
-{
-	int	y;
-	int	x;
-
-	y = start_y - 'a';
-	x = start_x - '0' - 1;
-	// printf("x = %d | y = %d\n", x, y);
-	if (move_idx % 2 != 0)
-		p -= 32;
-	if (x - 2 >= 0 && y + 1 <= 7)
-	{
-		if (board[x - 2][y + 1] == p)
-		{
-			board[x - 2][y + 1] = ' ';
-			return (0);
-		}
-	}
-	if (x - 2 >= 0 && y - 1 >= 0)
-	{
-		if (board[x - 2][y - 1] == p)
-		{
-			board[x - 2][y - 1] = ' ';
-			return (0);
-		}
-	}
-	if (x + 2 <= 7 && y + 1 <= 7)
-	{
-		if (board[x + 2][y + 1] == p)
-		{
-			board[x + 2][y + 1] = ' ';
-			return (0);
-		}
-	}
-	if (x + 2 <= 7 && y - 1 >= 0)
-	{
-		if (board[x + 2][y - 1] == p)
-		{
-			board[x + 2][y - 1] = ' ';
-			return (0);
-		}
-	}
-	if (x + 1 <= 7 && y - 2 >= 0)
-	{
-		if (board[x + 1][y - 2] == p)
-		{
-			board[x + 1][y - 2] = ' ';
-			return (0);
-		}
-	}
-	if (x - 1 >= 0 && y - 2 >= 0)
-	{
-		if (board[x - 1][y - 2] == p)
-		{
-			board[x - 1][y - 2] = ' ';
-			return (0);
-		}
-	}
-	if (x + 1 <= 7 && y + 2 <= 7)
-	{
-		if (board[x + 1][y + 2] == p)
-		{
-			board[x + 1][y + 2] = ' ';
-			return (0);
-		}
-	}
-	if (x - 1 >= 0 && y + 2 <= 7)
-	{
-		if (board[x - 1][y + 2] == p)
-		{
-			board[x - 1][y + 2] = ' ';
-			return (0);
-		}
-	}
-}
 // invalid read of size ?
 int	clean_king(char p, char start_y, char start_x, int board[8][8],
 		int move_idx)
@@ -89,45 +13,25 @@ int	clean_king(char p, char start_y, char start_x, int board[8][8],
 	// printf("x = %d | y = %d\n", x, y);
 	if (move_idx % 2 != 0)
 		p -= 32;
-	x = x - 1;
-	y = y - 1;
-	// 3 cases du bas en ligne
-	while (y <= start_y - 'a' + 1)
+	if (x - 1 >= 0)
+		x = x - 1;
+	while (x <= 7 && x <= x + 1)
 	{
-		// printf("3 bot cells : board[%d][%d] = %c\n", x, y, board[x][y]);
-		if (board[x][y] == p)
+		y = 0;
+		while (y <= 7 && y <= start_y - 'a' + 1)
 		{
-			board[x][y] = ' ';
-			return (0);
+			// printf("3 bot cells : board[%d][%d] = %c\n", x, y, board[x][y]);
+			if (board[x][y] == p)
+			{
+				board[x][y] = ' ';
+				return (0);
+			}
+			y++;
 		}
-		y++;
+		x++;
 	}
-	x = start_x - '0' - 1;
-	y = start_y - 'a' - 1;
-	// 3 cases du milieu en ligne
-	while (y <= start_y - 'a' + 1)
-	{
-		// printf("3 middle cells : board[%d][%d] = %c\n", x, y, board[x][y]);
-		if (board[x][y] == p)
-		{
-			board[x][y] = ' ';
-			return (0);
-		}
-		y++;
-	}
-	x = start_x - '0';
-	y = start_y - 'a' - 1;
-	// 3 cases du haut en ligne
-	while (y <= start_y - 'a' + 1)
-	{
-		// printf("3 upper cells : board[%d][%d] = %c\n", x, y, board[x][y]);
-		if (board[x][y] == p)
-		{
-			board[x][y] = ' ';
-			return (0);
-		}
-		y++;
-	}
+	printf("ERROR : %c not found\n", p);
+	return (0);
 }
 
 int	clean_piece_in_lines(char p, char start_y, char start_x, int board[8][8],
@@ -197,7 +101,7 @@ int	clean_piece_in_lines(char p, char start_y, char start_x, int board[8][8],
 }
 
 int	clean_piece_in_diags(char p, char start_y, char start_x, int board[8][8],
-							int move_idx) // A racourcir ! //ajouter le insight
+							int move_idx) // A racourcir !
 {
 	int y;
 	int x;
@@ -306,13 +210,7 @@ void	clean_origin(game_info *infos, int board[8][8], int move_idx)
 		board[infos->moves[move_idx].col_hint][infos->moves[move_idx].row_hint] = ' ';
 	// Si hint col //To do !
 	else if (infos->moves[move_idx].col_hint)
-	{
 		return (col_hint_case(infos, board, move_idx));
-		// Chercher un p dans board[col_hint][?]
-		// ori[0] = col_hint
-		// ori[1] = x
-		// board[y][x] = ' ';
-	}
 	// si hint row
 	else if (infos->moves[move_idx].row_hint)
 	{
