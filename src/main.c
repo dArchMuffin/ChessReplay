@@ -9,7 +9,7 @@ int	main(int ac, char **av)
 	game_info	game_info;
 	int			game_number;
 	int			e;
-	int			i;
+	int			move_idx;
 	int			turn;
 
 	if (ac != 1)
@@ -25,7 +25,7 @@ int	main(int ac, char **av)
 	init_board(board);
 	print_board(board, &game_info);
 	turn = 1;
-	i = 0;
+	move_idx = 0;
 	while (1)
 	{
 		if (turn > game_info.nb_moves / 2)
@@ -35,16 +35,18 @@ int	main(int ac, char **av)
 			turn);
 		printf("\n                                     +----------+\n");
 		turn++;
-		write_move(&game_info, board, i);
+		write_move(&game_info, board, move_idx);
 		// update board : update board with last move
+		update_board(&game_info, board, move_idx);
 		print_board(board, &game_info);
 		sleep(1);
-		i++;
-		write_move(&game_info, board, i);
+		move_idx++;
+		write_move(&game_info, board, move_idx);
 		// update board
+		update_board(&game_info, board, move_idx);
 		print_board(board, &game_info);
 		sleep(1);
-		i++;
+		move_idx++;
 	}
 	free_game_info(&game_info);
 	return (0);

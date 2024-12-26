@@ -1,24 +1,27 @@
 #include "header.h"
 #include "stdio.h" //A virer quand j'aurai mis mon printf
 
-int	print_piece(game_info *infos, int color)
+int	print_piece(game_info *infos, int move_idx)
 {
-	if (infos->moves[color].piece == PAWN) // Renommer color ?
+	if (infos->moves[move_idx].piece == PAWN)
 		printf("pawn ");
-	else if (infos->moves[color].piece == KNIGHT)
+	else if (infos->moves[move_idx].piece == KNIGHT)
 		printf("knight ");
-	else if (infos->moves[color].piece == BISHOP)
+	else if (infos->moves[move_idx].piece == BISHOP)
 		printf("bishop ");
-	else if (infos->moves[color].piece == ROOK)
+	else if (infos->moves[move_idx].piece == ROOK)
 		printf("rook ");
-	else if (infos->moves[color].piece == QUEEN)
+	else if (infos->moves[move_idx].piece == QUEEN)
 		printf("queen ");
-	else if (infos->moves[color].piece == KING)
+	else if (infos->moves[move_idx].piece == KING)
 		printf("king ");
 }
 
-void	print_piece_in(int board[8][8], char dest[2]) //To fix
+void	print_piece_in(int board[8][8], char d[3]) //To fix
 {
+	char dest[3];
+
+	dest[2] = '\0';
     dest[1] = dest[1] - '0' - 1;
     dest[0] = dest[0] - 'a';
 	if (board[dest[1]][dest[0]] == ' ')
@@ -39,71 +42,73 @@ void	print_piece_in(int board[8][8], char dest[2]) //To fix
 }
 
 // Renvoyer les coord de la case d'origine de la piece ?
-int	*write_move(game_info *infos, int board[8][8], int color)
-// Revoir le int color
+int	*write_move(game_info *infos, int board[8][8], int move_idx)
+// Revoir le int move_idx
 {
 	int i;
 
-	if (infos->moves[color].is_mate == true)
+	// move_idx of player's move ->fct ?
+	if (move_idx % 2 == 0)
+		printf("\nWhite ");
+	else
+		printf("\nBlack ");
+	// castle case
+	if (infos->moves[move_idx].type == SHORT_CASTLE)
+		printf("short castle ");
+	if (infos->moves[move_idx].type == LONG_CASTLE)
+		printf("long castle ");
+	// piece to move
+	print_piece(infos, move_idx);
+	// type of action
+	if (infos->moves[move_idx].type == NORMAL)
+		printf("moves to %s", infos->moves[move_idx].destination);
+	else if (infos->moves[move_idx].type == CAPTURE)
 	{
-		if (color % 2 == 0)
+		printf("takes ");
+		print_piece_in(board, infos->moves[move_idx].destination);
+	}
+	else
+		printf("error in type\n");
+	//check / comment / evals
+	if (infos->moves[move_idx].is_check == true)
+		printf(". Check !");
+	else if (infos->moves[move_idx].is_mate == true)
+		printf(". Checkmate !");
+	else
+		printf(".");
+	if (infos->moves[move_idx].is_mate == true)
+	{
+		if (move_idx % 2 == 0)
 			printf("\nWhite win\n");
 		else
 			printf("\nBlack win\n");
 		return (0);
 	}
-	// color of player's move ->fct ?
-	if (color % 2 == 0)
-		printf("\nWhite ");
-	else
-		printf("\nBlack ");
-	// castle case
-	if (infos->moves[color].type == SHORT_CASTLE)
-		printf("short castle ");
-	if (infos->moves[color].type == LONG_CASTLE)
-		printf("long castle ");
-	// piece to move
-	print_piece(infos, color);
-	// type of action
-	if (infos->moves[color].type == NORMAL)
-		printf("moves to %s", infos->moves[color].destination);
-	else if (infos->moves[color].type == CAPTURE)
-	{
-		printf("takes ");
-		print_piece_in(board, infos->moves[color].destination);
-	}
-	else
-		printf("error in type\n");
-	//check / comment / evals
-	if (infos->moves[color].is_check == true)
-		printf(". Check !");
-	else
-		printf(".");
-	printf("\t #%d : [%s]", color, infos->moves[color].pgn);
+	printf("\t #%d : [%s]", move_idx, infos->moves[move_idx].pgn);
 	// Comment ->fct 
-	if (infos->moves[color].comment)
+	if (infos->moves[move_idx].comment)
 	{
 		printf("\n");
-		if (ft_strlen(infos->moves[color].comment) == 1)
+		if (ft_strlen(infos->moves[move_idx].comment) == 1)
 		{
-			if (infos->moves[color].comment[0] == '!')
+			if (infos->moves[move_idx].comment[0] == '!')
 				printf("Good move");
 			else
 				printf("Mistake");
 		}
-		else if (ft_strlen(infos->moves[color].comment) == 2)
+		else if (ft_strlen(infos->moves[move_idx].comment) == 2)
 		{
-			if (infos->moves[color].comment[0] == '!'
-				&& infos->moves[color].comment[1] == '!')
+			if (infos->moves[move_idx].comment[0] == '!'
+				&& infos->moves[move_idx].comment[1] == '!')
 				printf("Brilliant move");
-			else if (infos->moves[color].comment[0] == '!'
-				&& infos->moves[color].comment[1] == '?')
+			else if (infos->moves[move_idx].comment[0] == '!'
+				&& infos->moves[move_idx].comment[1] == '?')
 				printf("Interesting move");
-			else if (infos->moves[color].comment[0] == '?'
-				&& infos->moves[color].comment[1] == '?')
+			else if (infos->moves[move_idx].comment[0] == '?'
+				&& infos->moves[move_idx].comment[1] == '?')
 				printf("Blunder");
-			else if (infos->moves[color].comment[0] == '?'
-				&& infos->moves[color].comment[1] == '!')
+			else if (infos->moves[move_idx].comment[0] == '?'
+				&& infos->moves[move_idx].comment[1] == '!')
 				printf("Dubious move");
 		}
 		printf("\t");
@@ -111,8 +116,8 @@ int	*write_move(game_info *infos, int board[8][8], int color)
 	else
 		printf("\n");
 	// Evals
-	if (infos->moves[color].eval)
-		printf("\t%s", infos->moves[color].eval);
+	if (infos->moves[move_idx].eval)
+		printf("\t%s", infos->moves[move_idx].eval);
 	printf("\n\n");
 	return (0);
 }

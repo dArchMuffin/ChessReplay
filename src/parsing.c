@@ -78,13 +78,11 @@ void	split_headers(char *game, game_info *game_info)
 	}
 	game_info->headers = malloc(sizeof(char *) * nb_headers);
 	game_info->nb_headers = nb_headers;
-	i = 1;
+	i = 0;
 	j = 0;
 	start = -1;
 	while (game[i] && j < nb_headers)
 	{
-		if (game[i] == '\n' && game[i - 1] == '\n')
-			break ;
 		if (game[i] == '[')
 			start = i;
 		if (game[i] == '\n' && game[i - 1] != '\n')
@@ -92,6 +90,8 @@ void	split_headers(char *game, game_info *game_info)
 			game_info->headers[j] = ft_substr(game, start, i - start);
 			j++;
 		}
+		if (game[i] == '\n' && game[i - 1] == '\n')
+			break ;
 		i++;
 	}
 }
@@ -314,24 +314,20 @@ int	split_moves(char *game, game_info *game_info, size_t len)
 		i++;
 	}
 	// debug
-	i = 0;
-	while (i < nb_moves * 2)
-	{	
-		if (i == 10 || i == 51 || i == 49 || i == 48 || i == 47 || i == 45 || i == 40 || i == 39 || i == 38 || i == 37 || i == 33 || i == 22 || i == 21 || i == 17)
-		{
-		printf("moves[%d]\n", i);
-		printf("pgn = %s\n", game_info->moves[i].pgn);
-		printf("eval : %s\n", game_info->moves[i].eval);
-		printf("comment : %s\n", game_info->moves[i].comment); // m9 : "??b6"
-		printf("dest : %s\n", game_info->moves[i].destination);
-		// move[10] : dest : f7f5
-		printf("col_hint : %c\n", game_info->moves[i].col_hint);
-		printf("row_hint : %c\n", game_info->moves[i].row_hint); // bug
-		printf("is_check : %d\n", game_info->moves[i].is_check);
-		printf("is_mate : %d\n\n", game_info->moves[i].is_mate);
-		}
-		i++;
-	}
+	// i = 0;
+	// while (i < nb_moves * 2 && i < 5)
+	// {	
+	// 	printf("moves[%d]\n", i);
+	// 	printf("pgn = %s\n", game_info->moves[i].pgn);
+	// 	printf("eval : %s\n", game_info->moves[i].eval);
+	// 	printf("comment : %s\n", game_info->moves[i].comment);
+	// 	printf("dest : %s\n", game_info->moves[i].destination);
+	// 	printf("col_hint : %c\n", game_info->moves[i].col_hint);
+	// 	printf("row_hint : %c\n", game_info->moves[i].row_hint);
+	// 	printf("is_check : %d\n", game_info->moves[i].is_check);
+	// 	printf("is_mate : %d\n\n", game_info->moves[i].is_mate);
+	// 	i++;
+	// }
 	free(moves);
 	return (0);
 }
