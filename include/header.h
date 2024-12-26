@@ -1,5 +1,5 @@
-#ifndef CHESS
-# define CHESS
+#ifndef CHESSREPLAY
+# define CHESSREPLAY
 
 # include <stdbool.h>
 # include <unistd.h>
