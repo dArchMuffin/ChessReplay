@@ -9,7 +9,7 @@ int	clean_knight(char p, char start_y, char start_x, int board[8][8],
 
 	y = start_y - 'a';
 	x = start_x - '0' - 1;
-	printf("x = %d | y = %d\n", x, y);
+	// printf("x = %d | y = %d\n", x, y);
 	if (move_idx % 2 != 0)
 		p -= 32;
 	if (x - 2 >= 0 && y + 1 <= 7)
@@ -94,7 +94,7 @@ int	clean_king(char p, char start_y, char start_x, int board[8][8],
 	// 3 cases du bas en ligne
 	while (y <= start_y - 'a' + 1)
 	{
-		printf("3 cases du bas: board[%d][%d] = %c\n", x, y, board[x][y]);
+		// printf("3 bot cells : board[%d][%d] = %c\n", x, y, board[x][y]);
 		if (board[x][y] == p)
 		{
 			board[x][y] = ' ';
@@ -107,7 +107,7 @@ int	clean_king(char p, char start_y, char start_x, int board[8][8],
 	// 3 cases du milieu en ligne
 	while (y <= start_y - 'a' + 1)
 	{
-		printf("3 cases du milieu : board[%d][%d] = %c\n", x, y, board[x][y]);
+		// printf("3 middle cells : board[%d][%d] = %c\n", x, y, board[x][y]);
 		if (board[x][y] == p)
 		{
 			board[x][y] = ' ';
@@ -120,7 +120,7 @@ int	clean_king(char p, char start_y, char start_x, int board[8][8],
 	// 3 cases du haut en ligne
 	while (y <= start_y - 'a' + 1)
 	{
-		printf("3 cases du haut : board[%d][%d] = %c\n", x, y, board[x][y]);
+		// printf("3 upper cells : board[%d][%d] = %c\n", x, y, board[x][y]);
 		if (board[x][y] == p)
 		{
 			board[x][y] = ' ';
@@ -138,7 +138,7 @@ int	clean_piece_in_lines(char p, char start_y, char start_x,
 
 	y = start_y - 'a';
 	x = start_x - '0' - 1;
-	printf("x = %d | y = %d\n", x, y);
+	// printf("x = %d | y = %d\n", x, y);
 	if (move_idx % 2 != 0)
 		p -= 32;
 	// in col up
@@ -197,7 +197,7 @@ int	clean_piece_in_lines(char p, char start_y, char start_x,
 }
 
 int	clean_piece_in_diags(char p, char start_y, char start_x, int board[8][8],
-							int move_idx) // A racourcir !
+							int move_idx) // A racourcir ! //ajouter le insight
 {
 	int y;
 	int x;
@@ -210,7 +210,7 @@ int	clean_piece_in_diags(char p, char start_y, char start_x, int board[8][8],
 	// diag bot left
 	while (y >= 0 && x >= 0)
 	{
-		printf("diag bot left x- y- : board[%d][%d] = %c\n", x, y, board[x][y]);
+		// printf("diag bot left x- y- : board[%d][%d] = %c\n", x, y, board[x][y]);
 		if (board[x][y] == p)
 		{
 			board[x][y] = ' ';
@@ -224,8 +224,8 @@ int	clean_piece_in_diags(char p, char start_y, char start_x, int board[8][8],
 	// diag top right
 	while (y <= 7 && x <= 7)
 	{
-		printf("diag top right x+ y+ : board[%d][%d] = %c\n", x, y,
-			board[x][y]);
+		// printf("diag top right x+ y+ : board[%d][%d] = %c\n", x, y,
+			// board[x][y]);
 		if (board[x][y] == p)
 		{
 			board[x][y] = ' ';
@@ -239,7 +239,7 @@ int	clean_piece_in_diags(char p, char start_y, char start_x, int board[8][8],
 	// diag top left
 	while (y >= 0 && x <= 7)
 	{
-		printf("diag top left x+ y- : board[%d][%d] = %c\n", x, y, board[x][y]);
+		// printf("diag top left x+ y- : board[%d][%d] = %c\n", x, y, board[x][y]);
 		if (board[x][y] == p)
 		{
 			board[x][y] = ' ';
@@ -253,8 +253,8 @@ int	clean_piece_in_diags(char p, char start_y, char start_x, int board[8][8],
 	// diag bot right
 	while (y <= 7 && x >= 0)
 	{
-		printf("diag bot right x- y+ : board[%d][%d] = %c\n", x, y,
-			board[x][y]);
+		// printf("diag bot right x- y+ : board[%d][%d] = %c\n", x, y,
+			// board[x][y]);
 		if (board[x][y] == p)
 		{
 			board[x][y] = ' ';
@@ -299,7 +299,7 @@ void	clean_origin(game_info *infos, int board[8][8], int move_idx)
 	// Si double hint //TODO !
 	if (infos->moves[move_idx].col_hint && infos->moves[move_idx].row_hint)
 		board[infos->moves[move_idx].col_hint][infos->moves[move_idx].row_hint] = ' ';
-	// Si hint col
+	// Si hint col //To do !
 	else if (infos->moves[move_idx].col_hint)
 	{
 		return (col_hint_case(infos, board, move_idx));
