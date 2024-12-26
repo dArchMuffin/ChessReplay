@@ -130,8 +130,8 @@ int	clean_king(char p, char start_y, char start_x, int board[8][8],
 	}
 }
 
-int	clean_piece_in_lines(char p, char start_y, char start_x,
-		int board[8][8], int move_idx)
+int	clean_piece_in_lines(char p, char start_y, char start_x, int board[8][8],
+		int move_idx)
 {
 	int	y;
 	int	x;
@@ -142,8 +142,9 @@ int	clean_piece_in_lines(char p, char start_y, char start_x,
 	if (move_idx % 2 != 0)
 		p -= 32;
 	// in col up
-	while (x <= 7)
+	while (x < 7)
 	{
+		x++;
 		if (board[x][y] != ' ' && board[x][y] != p)
 			break ;
 		if (board[x][y] == p)
@@ -151,12 +152,12 @@ int	clean_piece_in_lines(char p, char start_y, char start_x,
 			board[x][y] = ' ';
 			return (0);
 		}
-		x++;
 	}
 	// in col down
 	x = start_x - '0' - 1;
-	while (x >= 0)
+	while (x > 0)
 	{
+		x--;
 		if (board[x][y] != ' ' && board[x][y] != p)
 			break ;
 		if (board[x][y] == p)
@@ -164,12 +165,12 @@ int	clean_piece_in_lines(char p, char start_y, char start_x,
 			board[x][y] = ' ';
 			return (0);
 		}
-		x--;
 	}
 	x = start_x - '0' - 1;
 	// in row left
-	while (y >= 0)
+	while (y > 0)
 	{
+		y--;
 		if (board[x][y] != ' ' && board[x][y] != p)
 			break ;
 		if (board[x][y] == p)
@@ -177,12 +178,12 @@ int	clean_piece_in_lines(char p, char start_y, char start_x,
 			board[x][y] = ' ';
 			return (0);
 		}
-		y--;
 	}
 	y = start_y - 'a';
 	// in row right
-	while (y <= 7)
+	while (y < 7)
 	{
+		y++;
 		if (board[x][y] != ' ' && board[x][y] != p)
 			break ;
 		if (board[x][y] == p)
@@ -190,7 +191,6 @@ int	clean_piece_in_lines(char p, char start_y, char start_x,
 			board[x][y] = ' ';
 			return (0);
 		}
-		y++;
 	}
 	printf("%c not found in lines\n", p);
 	return (1);
@@ -204,64 +204,70 @@ int	clean_piece_in_diags(char p, char start_y, char start_x, int board[8][8],
 
 	y = start_y - 'a';
 	x = start_x - '0' - 1;
-	printf("x = %d | y = %d\n", x, y);
+	printf("x = %d | y = %d\n target : board[3][2] = %c\n", x, y, board[3][2]);
 	if (move_idx % 2 != 0)
 		p -= 32;
 	// diag bot left
-	while (y >= 0 && x >= 0)
+	while (y > 0 && x > 0)
 	{
-		// printf("diag bot left x- y- : board[%d][%d] = %c\n", x, y, board[x][y]);
+		y--;
+		x--;
+		printf("diag bot left : board[%d][%d] = %c\n", x, y, board[x][y]);
+		if (board[x][y] != ' ' && board[x][y] != p)
+			break ;
 		if (board[x][y] == p)
 		{
 			board[x][y] = ' ';
 			return (0);
 		}
-		y--;
-		x--;
 	}
 	y = start_y - 'a';
 	x = start_x - '0' - 1;
 	// diag top right
-	while (y <= 7 && x <= 7)
+	while (y < 7 && x < 7)
 	{
-		// printf("diag top right x+ y+ : board[%d][%d] = %c\n", x, y,
-			// board[x][y]);
+		y++;
+		x++;
+		printf("diag top right : board[%d][%d] = %c\n", x, y, board[x][y]);
+		if (board[x][y] != ' ' && board[x][y] != p)
+			break ;
 		if (board[x][y] == p)
 		{
 			board[x][y] = ' ';
 			return (0);
 		}
-		y++;
-		x++;
 	}
 	y = start_y - 'a';
 	x = start_x - '0' - 1;
 	// diag top left
-	while (y >= 0 && x <= 7)
+	while (y > 0 && x < 7)
 	{
-		// printf("diag top left x+ y- : board[%d][%d] = %c\n", x, y, board[x][y]);
+		y--;
+		x++;
+		printf("diag top left : board[%d][%d] = %c\n", x, y, board[x][y]);
+		if (board[x][y] != ' ' && board[x][y] != p)
+			break ;
 		if (board[x][y] == p)
 		{
 			board[x][y] = ' ';
 			return (0);
 		}
-		y--;
-		x++;
 	}
 	y = start_y - 'a';
 	x = start_x - '0' - 1;
 	// diag bot right
-	while (y <= 7 && x >= 0)
+	while (y < 7 && x > 0)
 	{
-		// printf("diag bot right x- y+ : board[%d][%d] = %c\n", x, y,
-			// board[x][y]);
+		y++;
+		x--;
+		printf("diag bot right : board[%d][%d] = %c\n", x, y, board[x][y]);
+		if (board[x][y] != ' ' && board[x][y] != p)
+			break ;
 		if (board[x][y] == p)
 		{
 			board[x][y] = ' ';
 			return (0);
 		}
-		y++;
-		x--;
 	}
 	printf("%c not found in diag\n", p);
 	return (1);
