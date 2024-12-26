@@ -22,8 +22,8 @@ void	print_piece_in(int board[8][8], char d[3]) //To fix
 	char dest[3];
 
 	dest[2] = '\0';
-    dest[1] = dest[1] - '0' - 1;
-    dest[0] = dest[0] - 'a';
+    dest[1] = d[1] - '0' - 1;
+    dest[0] = d[0] - 'a';
 	if (board[dest[1]][dest[0]] == ' ')
 		printf("[no piece found] ");
 	else if (board[dest[1]][dest[0]] == 'p' || board[dest[1]][dest[0]] == 'P')

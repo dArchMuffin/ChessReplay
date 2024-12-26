@@ -204,7 +204,6 @@ int	clean_piece_in_diags(char p, char start_y, char start_x, int board[8][8],
 
 	y = start_y - 'a';
 	x = start_x - '0' - 1;
-	printf("x = %d | y = %d\n target : board[3][2] = %c\n", x, y, board[3][2]);
 	if (move_idx % 2 != 0)
 		p -= 32;
 	// diag bot left
