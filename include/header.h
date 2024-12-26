@@ -54,11 +54,28 @@ int			ft_isdigit(int c);
 int			ft_isalpha(int c);
 
 // Chess
+	// Parsing
 int			read_game(int game_number, game_info *infos);
+void		free_game_info(game_info *game_info);
+	// Board
 void		init_board(int board[8][8]);
 void		print_board(int board[8][8], game_info *infos);
-void		free_game_info(game_info *game_info);
+	// write_move
 int			*write_move(game_info *infos, int board[8][8], int move_idx);
+	// update_board
 void		update_board(game_info *infos, int board[8][8], int move_idx);
+void		no_hint_case(game_info *infos, int board[8][8], int move_idx);
+void		col_hint_case(game_info *infos, int board[8][8], int move_idx);
+void		row_hint_case(game_info *infos, int board[8][8], int move_idx);
+	// cleaners
+void		clean_origin(game_info *infos, int board[8][8], int move_idx);
+int			clean_knight(char p, char start_y, char start_x, int board[8][8],
+				int move_idx);
+int			clean_piece_in_lines(char p, char start_y, char start_x,
+				int board[8][8], int move_idx);
+int	clean_piece_in_diags(char p, char start_y, char start_x, int board[8][8],
+							int move_idx); // A racourcir !
+int			clean_king(char p, char start_y, char start_x, int board[8][8],
+				int move_idx);
 
 #endif

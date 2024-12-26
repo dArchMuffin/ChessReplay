@@ -244,18 +244,6 @@ move	parse_moves(char *game, int i)
 	}
 	else
 		m.eval = NULL;
-	// Bricolage a revoir :
-	// m.piece = PAWN;
-	// m.type = NORMAL;
-	// m.eval = NULL;
-	// m.comment[0] = 'a';
-	// m.comment[1] = '1';
-	// m.destination[0] = 'a';
-	// m.destination[1] = '1';
-	// m.col_hint = 'a';
-	// m.row_hint = '1';
-	// m.is_check = false;
-	// m.is_mate = true;
 	return (m);
 }
 
