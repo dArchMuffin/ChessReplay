@@ -1,0 +1,20 @@
+[Event "Rated Blitz game"]
+[Site "https://lichess.org/xxyeeoto"]
+[White "GuaSha"]
+[Black "hamiakaz"]
+[Result "1-0"]
+[UTCDate "2013.01.05"]
+[UTCTime "19:17:59"]
+[WhiteElo "1697"]
+[BlackElo "1543"]
+[WhiteRatingDiff "+23"]
+[BlackRatingDiff "-6"]
+[ECO "A07"]
+[Opening "King's Indian Attack"]
+[TimeControl "180+5"]
+[Termination "Normal"]
+
+1. Nf3 d5 2. g3 Nc6 3. Bg2 e5 4. d4 e4 5. Nfd2 Nf6 6. e3 Bd6 7. O-O O-O 8. Re1 Bg4 9. f3 exf3 10. Bxf3 Bxf3 11. Nxf3 Ne4 12. Nbd2 Qf6 13. Nxe4 dxe4 14. Nh4 Qg5 15. c4 Bxg3 16. hxg3 Qxg3+ 17. Ng2 Rfe8 18. Qc2 Nb4 19. Qf2 Qxf2+ 20. Kxf2 Nd3+ 21. Ke2 Nxe1 22. Kxe1 Rad8 23. Nf4 c6 24. Bd2 g6 25. c5 f5 26. Ba5 Rd7 27. Ke2 Kg7 28. Rh1 h5 29. Rg1 Kf7 30. Rxg6 Rh8 31. Kf2 h4 32. Rg5 Kf6 33. Rh5 Rxh5 34. Nxh5+ Kg5 35. Nf4 Kg4 36. Kg2 Rh7 37. Kh2 Kf3 38. Bd2 b6 39. cxb6 axb6 40. Kh3 Kf2 41. Bc1 c5 42. dxc5 bxc5 43. Bd2 c4 44. a4 Ra7 45. a5 Rh7 46. a6 Ra7 47. Kxh4 Rxa6 48. Kg5 Ra2 49. Bc3 Kxe3 50. Kxf5 Kf3 51. Nd5 e3 52. Nxe3 Kxe3 53. Ke5 Kd3 54. Kd5 Ra1 55. Kc5 Rc1 56. Kb4 Rxc3 57. bxc3 Ke4 58. Kxc4 Ke5 59. Kc5 Ke6 60. Kc6 Ke7 61. Kc7 Ke6 62. c4 Ke5 63. c5 1-0
+
+
+STOP

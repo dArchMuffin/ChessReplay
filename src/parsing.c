@@ -113,13 +113,31 @@ move	parse_moves(char *game, int i)
 	i = start;
 	// 1 : cas où on cherche un char dans le move : ADD 1/2 1/2 !
 	// O : Castles
-	if (game[i] == 'O')
+	while (game[i] && game[i] != ' ')
 	{
-		if (game[i + 3] == '-')
-			m.type = LONG_CASTLE;
-		else
-			m.type = SHORT_CASTLE;
+		if (game[i] == 'O')
+		{
+			if (game[i + 3] == '-')
+			{
+				m.type = LONG_CASTLE;
+				break ;
+			}
+			else
+			{
+				m.type = SHORT_CASTLE;
+				break ;
+			}
+		}
+		i++;
 	}
+	i = start;
+	// if (game[i] == 'O')
+	// {
+	// 	if (game[i + 3] == '-')
+	// 		m.type = LONG_CASTLE;
+	// 	else
+	// 		m.type = SHORT_CASTLE;
+	// }
 	//+ : check
 	i = start;
 	while (game[i] && game[i] != ' ')
@@ -144,7 +162,7 @@ move	parse_moves(char *game, int i)
 		}
 		i++;
 	}
-	if (game[i] == ' ')
+	if (game[i] == ' ' && m.type != LONG_CASTLE && m.type != SHORT_CASTLE)
 		m.type = NORMAL;
 	//# : checkmate
 	i = start;
@@ -173,7 +191,7 @@ move	parse_moves(char *game, int i)
 	}
 	m.comment[j] = '\0';
 	i = start;
-	//Manque promotion
+	// Manque promotion
 	// 2 : which piece is moving ?
 	if (game[i] >= 'a' && game[i] <= 'h')
 		m.piece = PAWN;
@@ -195,7 +213,8 @@ move	parse_moves(char *game, int i)
 	}
 	i = start;
 	// is there an hint ? (N/R/B/Q) //TODO ! //Buggy
-	if (m.piece == ROOK || m.piece == BISHOP || m.piece == KNIGHT || m.piece == QUEEN)
+	if (m.piece == ROOK || m.piece == BISHOP || m.piece == KNIGHT
+		|| m.piece == QUEEN)
 	{
 		while (game[i] && game[i] != ' ')
 			i++;
@@ -212,7 +231,8 @@ move	parse_moves(char *game, int i)
 		if (i != start && game[i] >= 'a' && game[i] <= 'h')
 			m.col_hint = game[i];
 	}
-	else //Tous les autres cas on n'aura pas d'indice ? cas particulier du pion ?
+	else
+		// Tous les autres cas on n'aura pas d'indice ? cas particulier du pion ?
 	{
 		m.row_hint = '\0';
 		m.col_hint = '\0';
@@ -228,8 +248,7 @@ move	parse_moves(char *game, int i)
 			i--;
 		m.destination[0] = game[i - 1];
 		m.destination[1] = game[i];
-		m.destination[2] = '\0'; 
-
+		m.destination[2] = '\0';
 	}
 	i = start;
 	while (game[i] != ' ')
@@ -304,9 +323,12 @@ int	split_moves(char *game, game_info *game_info, size_t len)
 	}
 	// debug
 	// i = 0;
-	// while (i < nb_moves * 2 && i < 5)
-	// {	
+	// while (i < nb_moves * 2 && i <= 13)
+	// {
 	// 	printf("moves[%d]\n", i);
+	// 	if (game_info->moves[i].type == SHORT_CASTLE
+	// 		|| game_info->moves[i].type == LONG_CASTLE)
+	// 		printf("type = castle\n");
 	// 	printf("pgn = %s\n", game_info->moves[i].pgn);
 	// 	printf("eval : %s\n", game_info->moves[i].eval);
 	// 	printf("comment : %s\n", game_info->moves[i].comment);
@@ -378,7 +400,7 @@ int	read_game(int game_number, game_info *game_info)
 	int nl;
 
 	// opening file with game(s)
-	fd = open("gametest2.txt", O_RDONLY); // Ajouter une option argv
+	fd = open("gametest3.txt", O_RDONLY); // Ajouter une option argv
 	if (fd < 0)
 	{
 		printf("Error while opening a file\n");

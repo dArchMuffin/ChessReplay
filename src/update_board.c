@@ -75,7 +75,6 @@ void	col_hint_case(game_info *infos, int board[8][8], int move_idx)
 			p -= 32;
 		y = infos->moves[move_idx].col_hint - 'a';
 		x = infos->moves[move_idx].destination[1] - '0' - 1;
-		printf("%d\n", infos->moves[move_idx].destination[0] - 'a' - y);
 		if ((infos->moves[move_idx].destination[0] - 'a') - y == -2)
 		{
 			// printf("board[%d][%d] = %c\n", x - 1, y, board[x - 1][y]);
@@ -196,8 +195,52 @@ void	row_hint_case(game_info *infos, int board[8][8], int move_idx)
 	}
 }
 
+int	castle_cases(game_info *infos, int board[8][8], int move_idx)
+{
+	if (infos->moves[move_idx].type == SHORT_CASTLE)
+	{
+		if (move_idx % 2 == 0)
+		{
+			board[0][4] = ' ';
+			board[0][7] = ' ';
+			board[0][6] = 'k';
+			board[0][5] = 'r';
+		}
+		else
+		{
+			board[7][4] = ' ';
+			board[7][7] = ' ';
+			board[7][6] = 'K';
+			board[7][5] = 'R';
+		}
+	}
+	else
+	{
+		if (move_idx % 2 == 0)
+		{
+			board[0][0] = ' ';
+			board[0][4] = ' ';
+			board[0][2] = 'k';
+			board[0][3] = 'r';
+		}
+		else
+		{
+			board[7][0] = ' ';
+			board[7][4] = ' ';
+			board[7][2] = 'K';
+			board[7][3] = 'R';
+		}
+	}
+}
+
 void	update_board(game_info *infos, int board[8][8], int move_idx)
 {
-	clean_origin(infos, board, move_idx);
-	put_piece_in(infos, board, move_idx);
+	if (infos->moves[move_idx].type == SHORT_CASTLE
+		|| infos->moves[move_idx].type == LONG_CASTLE)
+		castle_cases(infos, board, move_idx);
+	else
+	{
+		clean_origin(infos, board, move_idx);
+		put_piece_in(infos, board, move_idx);
+	}
 }

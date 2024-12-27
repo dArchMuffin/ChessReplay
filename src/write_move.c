@@ -51,12 +51,12 @@ int	*write_move(game_info *infos, int board[8][8], int move_idx)
 	if (move_idx % 2 == 0)
 		printf("\nWhite ");
 	else
-		printf("\nBlack ");
+		printf("\n\n\n\n\nBlack ");
 	// castle case
-	if (infos->moves[move_idx].type == SHORT_CASTLE)
-		printf("short castle ");
+	if (infos->moves[move_idx].type == SHORT_CASTLE) //Apres un rock ça continue ça s'imprimer
+		printf("short castle");
 	if (infos->moves[move_idx].type == LONG_CASTLE)
-		printf("long castle ");
+		printf("long castle");
 	// piece to move
 	print_piece(infos, move_idx);
 	// type of action
@@ -67,7 +67,7 @@ int	*write_move(game_info *infos, int board[8][8], int move_idx)
 		printf("takes ");
 		print_piece_in(board, infos->moves[move_idx].destination);
 	}
-	else
+	else if (infos->moves[move_idx].type != LONG_CASTLE && infos->moves[move_idx].type != SHORT_CASTLE)
 		printf("error in type\n");
 	//check / comment / evals
 	if (infos->moves[move_idx].is_check == true)
