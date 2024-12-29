@@ -233,11 +233,89 @@ int	castle_cases(game_info *infos, int board[8][8], int move_idx)
 	}
 }
 
+int	promote_and_clean(game_info * infos, int board[8][8], int move_idx)
+{
+	int x;
+	int y;
+
+	if (infos->moves[move_idx].is_promotion == true) //Clean but not put in
+	{
+		if (move_idx % 2 == 0)
+		{
+			//Cleaning pawn in pgn[1] / pgn[0] - 1
+
+			// printf("board[%d - 1][%d] = %c\n", x, y, board[x - 1][y]);
+
+			//putting promoted piece in pgn[1] pgn[0]
+			// printf("dest to print = %d%d | board[%d][%d] = %c\n", infos->moves[move_idx].pgn[1] - '0' - 1, infos->moves[move_idx].pgn[0] - 'a', infos->moves[move_idx].pgn[1] - '0' - 1, infos->moves[move_idx].pgn[0] - 'a', board[infos->moves[move_idx].pgn[1] - '0' - 1][infos->moves[move_idx].pgn[0] - 'a']);
+			if (infos->moves[move_idx].type == CAPTURE)
+			{
+				x = infos->moves[move_idx].destination[1] - '0' - 1;
+				y = infos->moves[move_idx].pgn[0] - 'a';
+				board[x - 1][y] = ' ';
+				if (infos->moves[move_idx].promoted == KNIGHT)
+				board[x][infos->moves[move_idx].destination[0] - 'a'] = 'n';	
+				else if (infos->moves[move_idx].promoted == BISHOP)
+				board[x][infos->moves[move_idx].destination[0] - 'a'] = 'b';	
+				else if (infos->moves[move_idx].promoted == ROOK)
+				board[x][infos->moves[move_idx].destination[0] - 'a'] = 'r';	
+				else if (infos->moves[move_idx].promoted == QUEEN)
+				board[x][infos->moves[move_idx].destination[0] - 'a'] = 'q';	
+			}
+			else 
+			{
+				board[infos->moves[move_idx].pgn[1] - '0' - 2][infos->moves[move_idx].pgn[0] - 'a'] = ' ';
+				if (infos->moves[move_idx].promoted == KNIGHT)
+				board[infos->moves[move_idx].pgn[1] - '0' - 1][infos->moves[move_idx].pgn[0] - 'a'] = 'n';	
+				else if (infos->moves[move_idx].promoted == BISHOP)
+				board[infos->moves[move_idx].pgn[1] - '0' - 1][infos->moves[move_idx].pgn[0] - 'a'] = 'b';	
+				else if (infos->moves[move_idx].promoted == ROOK)
+				board[infos->moves[move_idx].pgn[1] - '0' - 1][infos->moves[move_idx].pgn[0] - 'a'] = 'r';	
+				else if (infos->moves[move_idx].promoted == QUEEN)
+				board[infos->moves[move_idx].pgn[1] - '0' - 1][infos->moves[move_idx].pgn[0] - 'a'] = 'q';	
+			}
+		}
+		else //Black to test
+		{
+			//Cleaning pawn in pgn[1] / pgn[0] + 1
+			//putting promoted piece in pgn[1] pgn[0]
+			// printf("\ndest to print = %d%d | board[%d][%d] = %c\n", infos->moves[move_idx].pgn[1] - '0' - 1, infos->moves[move_idx].pgn[0] - 'a', infos->moves[move_idx].pgn[1] - '0' - 1, infos->moves[move_idx].pgn[0] - 'a', board[infos->moves[move_idx].pgn[1] - '0' - 1][infos->moves[move_idx].pgn[0] - 'a']);
+			if (infos->moves[move_idx].type == CAPTURE)
+			{
+				x = infos->moves[move_idx].destination[1] - '0' - 1;
+				y = infos->moves[move_idx].pgn[0] - 'a';
+				board[x + 1][y] = ' ';
+				if (infos->moves[move_idx].promoted == KNIGHT)
+				board[x][infos->moves[move_idx].destination[0] - 'a'] = 'N';	
+				else if (infos->moves[move_idx].promoted == BISHOP)
+				board[x][infos->moves[move_idx].destination[0] - 'a'] = 'B';	
+				else if (infos->moves[move_idx].promoted == ROOK)
+				board[x][infos->moves[move_idx].destination[0] - 'a'] = 'R';	
+				else if (infos->moves[move_idx].promoted == QUEEN)
+				board[x][infos->moves[move_idx].destination[0] - 'a'] = 'Q';	
+			}
+			else 
+			{
+				board[infos->moves[move_idx].pgn[1] - '0'][infos->moves[move_idx].pgn[0] - 'a'] = ' ';
+				if (infos->moves[move_idx].promoted == KNIGHT)
+				board[infos->moves[move_idx].pgn[1] - '0' - 1][infos->moves[move_idx].pgn[0] - 'a'] = 'N';	
+				else if (infos->moves[move_idx].promoted == BISHOP)
+				board[infos->moves[move_idx].pgn[1] - '0' - 1][infos->moves[move_idx].pgn[0] - 'a'] = 'B';	
+				else if (infos->moves[move_idx].promoted == ROOK)
+				board[infos->moves[move_idx].pgn[1] - '0' - 1][infos->moves[move_idx].pgn[0] - 'a'] = 'R';	
+				else if (infos->moves[move_idx].promoted == QUEEN)
+				board[infos->moves[move_idx].pgn[1] - '0' - 1][infos->moves[move_idx].pgn[0] - 'a'] = 'Q';	
+			}
+		}
+	}
+}
 void	update_board(game_info *infos, int board[8][8], int move_idx)
 {
 	if (infos->moves[move_idx].type == SHORT_CASTLE
 		|| infos->moves[move_idx].type == LONG_CASTLE)
 		castle_cases(infos, board, move_idx);
+	else if (infos->moves[move_idx].is_promotion == true)
+		promote_and_clean(infos, board, move_idx);
 	else
 	{
 		clean_origin(infos, board, move_idx);

@@ -1,0 +1,18 @@
+[Event "Rated Blitz tournament https://lichess.org/tournament/ARexvwI3"]
+[Site "https://lichess.org/C4OCO6xK"]
+[White "vova2000"]
+[Black "indra19"]
+[Result "0-1"]
+[UTCDate "2014.07.01"]
+[UTCTime "09:54:34"]
+[WhiteElo "1338"]
+[BlackElo "1404"]
+[WhiteRatingDiff "-78"]
+[BlackRatingDiff "+103"]
+[ECO "B01"]
+[Opening "Scandinavian Defense"]
+[TimeControl "300+0"]
+[Termination "Normal"]
+
+1. e4 d5 2. exd5 a5 3. d4 a4 4. b4 axb3 5. f4 g5 6. Bb2 gxf4 7. a4 f5 8. g3 fxg3 9. d6 bxc2 10. dxc7 f4 11. h3 Bh6 12. Rh2 f3 13. Rf2 Be6 14. Na3 Bb3 15. Nb5 Ra7 16. Ra3 Nc6 17. d5 Ra6 18. cxd8=Q+ Kxd8 19. d6 e6 20. d7 Ke7 21. Ne2 g2 22. d8=Q+ Kf7 23. h4 g1=Q 24. a5 Rb6 25. a6 Nxd8 26. a7 Nc6 27. a8=Q cxd1=Q#
+

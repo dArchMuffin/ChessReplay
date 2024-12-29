@@ -17,28 +17,39 @@ int	print_piece(game_info *infos, int move_idx)
 		printf("king ");
 }
 
-void	print_piece_in(int board[8][8], char d[3]) //To fix
+void	print_piece_in(int board[8][8], char d[3], int move_idx) // To fix
 {
 	char dest[3];
 
 	dest[2] = '\0';
-    dest[1] = d[1] - '0' - 1;
-    dest[0] = d[0] - 'a';
+	dest[1] = d[1] - '0' - 1;
+	dest[0] = d[0] - 'a';
 	if (board[dest[1]][dest[0]] == ' ')
-		printf("[no piece found] ");
+	{
+		if ((move_idx % 2 == 0 && board[dest[1] - 1][dest[0]] == 'P') || (move_idx % 2 != 0 && board[dest[1] + 1][dest[0]] == 'p'))
+			printf("pawn ");
+		else
+			printf("[no piece found] ");
+	}
 	else if (board[dest[1]][dest[0]] == 'p' || board[dest[1]][dest[0]] == 'P')
 		printf("pawn ");
 	else if (board[dest[1]][dest[0]] == 'r' || board[dest[1]][dest[0]] == 'R')
 		printf("rook ");
-    else if (board[dest[1]][dest[0]] == 'n' || board[dest[1]][dest[0]] == 'N')
-        printf("knight ");
-    else if (board[dest[1]][dest[0]] == 'b' || board[dest[1]][dest[0]] == 'B')
-        printf("bishop ");
-    else if (board[dest[1]][dest[0]] == 'q' || board[dest[1]][dest[0]] == 'Q')
-        printf("queen ");
-	printf("in %c%c", dest[0] + 'a', dest[1] + 1 + '0');
-    // else 
-    //     printf("ERROR : [board[6][5] = %c | dest[1] = %d | dest[0] = %d]", board[6][5], dest[1] - '0' - 1, dest[0] - 'a');
+	else if (board[dest[1]][dest[0]] == 'n' || board[dest[1]][dest[0]] == 'N')
+		printf("knight ");
+	else if (board[dest[1]][dest[0]] == 'b' || board[dest[1]][dest[0]] == 'B')
+		printf("bishop ");
+	else if (board[dest[1]][dest[0]] == 'q' || board[dest[1]][dest[0]] == 'Q')
+		printf("queen ");
+	if (move_idx % 2 == 0 && board[dest[1] - 1][dest[0]] == 'P')
+		printf("in %c%c", dest[0] + 'a', dest[1] + '0');
+	else if (move_idx % 2 != 0 && board[dest[1] + 1][dest[0]] == 'p')
+		printf("in %c%c", dest[0] + 'a', dest[1] + 2 + '0');
+	else
+		printf("in %c%c", dest[0] + 'a', dest[1] + 1 + '0');
+	// else
+	// printf("ERROR : [board[6][5] = %c | dest[1] = %d | dest[0] = %d]",
+	// board[6][5], dest[1] - '0' - 1, dest[0] - 'a');
 }
 
 // Renvoyer les coord de la case d'origine de la piece ?
@@ -46,36 +57,85 @@ int	*write_move(game_info *infos, int board[8][8], int move_idx)
 // Revoir le int move_idx
 {
 	int i;
-
 	// move_idx of player's move ->fct ?
-	if (move_idx % 2 == 0)
+	// Draw
+	if (infos->moves[move_idx].is_draw == true)
+	{
+		if (move_idx % 2 == 0)
+			printf("\nDraw");
+		else
+			printf("\n\n\n\nDraw");
+	}
+	if (move_idx % 2 == 0 && infos->moves[move_idx].is_draw != true)
 		printf("\nWhite ");
-	else
+	else if (infos->moves[move_idx].is_draw != true)
 		printf("\n\n\n\n\nBlack ");
+	// endgame draw
+	// endgame resign
+	if (infos->moves[move_idx].is_resign == true
+		&& infos->moves[move_idx].is_mate == false)
+	{
+		if (move_idx % 2 == 0)
+			printf("resign : black win");
+		else
+			printf("resign : white win");
+	}
 	// castle case
-	if (infos->moves[move_idx].type == SHORT_CASTLE) //Apres un rock ça continue ça s'imprimer
+	if (infos->moves[move_idx].type == SHORT_CASTLE)
 		printf("short castle");
 	if (infos->moves[move_idx].type == LONG_CASTLE)
 		printf("long castle");
+	//promotion //to test : capture, check, mate ...
+	if (infos->moves[move_idx].is_promotion == true)
+	{
+		if (infos->moves[move_idx].type == CAPTURE)
+		{
+			printf("pawn takes ");
+			print_piece_in(board, infos->moves[move_idx].destination, move_idx);
+		}
+		else if (infos->moves[move_idx].type == NORMAL)
+		{
+			printf("pawn moves in ");
+			printf("%s", infos->moves[move_idx].destination);
+		}
+		printf(" and is promoted to ");
+		if (infos->moves[move_idx].promoted == KNIGHT)
+			printf("knight");
+		else if (infos->moves[move_idx].promoted == BISHOP)
+			printf("bishop");
+		else if (infos->moves[move_idx].promoted == ROOK)
+			printf("rook");
+		else if (infos->moves[move_idx].promoted == QUEEN)
+			printf("queen");
+	}
 	// piece to move
-	print_piece(infos, move_idx);
+	if (infos->moves[move_idx].is_promotion != true)
+		print_piece(infos, move_idx);
 	// type of action
-	if (infos->moves[move_idx].type == NORMAL)
+	if (infos->moves[move_idx].type == NORMAL
+		&& infos->moves[move_idx].is_resign != true
+		&& infos->moves[move_idx].is_draw != true
+		&& infos->moves[move_idx].is_promotion != true)
 		printf("moves to %s", infos->moves[move_idx].destination);
-	else if (infos->moves[move_idx].type == CAPTURE)
+	else if (infos->moves[move_idx].type == CAPTURE && infos->moves[move_idx].is_promotion != true)
 	{
 		printf("takes ");
-		print_piece_in(board, infos->moves[move_idx].destination);
+		print_piece_in(board, infos->moves[move_idx].destination, move_idx);
 	}
-	else if (infos->moves[move_idx].type != LONG_CASTLE && infos->moves[move_idx].type != SHORT_CASTLE)
+	else if (infos->moves[move_idx].type != LONG_CASTLE
+		&& infos->moves[move_idx].type != SHORT_CASTLE
+		&& infos->moves[move_idx].is_resign != true
+		&& infos->moves[move_idx].is_draw != true
+		&& infos->moves[move_idx].is_promotion != true)
 		printf("error in type\n");
-	//check / comment / evals
+	// check / comment / evals
 	if (infos->moves[move_idx].is_check == true)
 		printf(". Check !");
 	else if (infos->moves[move_idx].is_mate == true)
 		printf(". Checkmate !");
-	else
+	else if (infos->moves[move_idx].is_resign != true)
 		printf(".");
+	printf("\t #%d : [%s]", move_idx, infos->moves[move_idx].pgn);
 	if (infos->moves[move_idx].is_mate == true)
 	{
 		if (move_idx % 2 == 0)
@@ -84,8 +144,15 @@ int	*write_move(game_info *infos, int board[8][8], int move_idx)
 			printf("\nBlack win\n");
 		return (0);
 	}
-	printf("\t #%d : [%s]", move_idx, infos->moves[move_idx].pgn);
-	// Comment ->fct 
+	// Time out
+	if (infos->moves[move_idx].is_time_out == true)
+	{
+		if (move_idx % 2 == 0)
+			printf("\nBlack's time out : white win");
+		else
+			printf("\nWhite's time out : black win");
+	}
+	// Comment ->fct
 	if (infos->moves[move_idx].comment)
 	{
 		printf("\n");

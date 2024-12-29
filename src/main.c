@@ -39,6 +39,8 @@ int	main(int ac, char **av)
 		// update board : update board with last move
 		update_board(&game_info, board, move_idx);
 		print_board(board, &game_info);
+		if (game_info.moves[move_idx].is_mate == true)
+			break ;
 		sleep(1);
 		move_idx++;
 		write_move(&game_info, board, move_idx);

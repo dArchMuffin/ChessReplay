@@ -34,31 +34,66 @@ int	clean_king(char p, char start_y, char start_x, int board[8][8],
 	return (1);
 }
 
+void clean_pawn(game_info *infos, int board[8][8], int move_idx)
+{
+	int x;
+	int y;
+	char p;
+
+	if (move_idx % 2 == 0)
+		p = 'p';
+	else 
+		p = 'P';
+	x = infos->moves[move_idx].destination[1] - '0' - 1;
+	y = infos->moves[move_idx].destination[0] - 'a';
+	//prise en passant
+	if (board[x][y] == ' ' && (x == 2 || x == 5))
+	{
+		//exd6 : clean e5 ET d5
+		if (move_idx % 2 == 0)
+		{
+			board[x - 1][infos->moves[move_idx].pgn[0] - 'a'] = ' ';
+			board[x - 1][y] = ' ';
+		}
+		//axb3 clean a4 ET b4
+		else 
+		{
+			board[x + 1][infos->moves[move_idx].pgn[0] - 'a'] = ' ';
+			board[x + 1][y] = ' ';
+		}
+		return ;
+	}
+	//move ou prise avec double pion
+	else 
+	{
+		//Gérer en premier si le pion fait un grand saut ou pas
+		y = infos->moves[move_idx].pgn[0] - 'a';
+		//exd5 : clean e4 //e5
+		if (move_idx % 2 == 0)
+		{
+			if (board[x - 1][y] == ' ')
+				board[x - 2][y] = ' ';
+			else 
+				board[x - 1][y] = ' ';
+		}
+		//dxe4 : clean d5
+		else
+			if (board[x + 1][y] == ' ')
+				board[x + 2][y] = ' ';
+			else 
+				board[x + 1][y] = ' ';
+		return ;
+	}
+}
+
 void	clean_origin(game_info *infos, int board[8][8], int move_idx)
 {
 	char p;
 	int x;
 	int y;
 
-	x = 0;
-	y = 0;
-	// p = board[dest[1] dest[0]];
-	if (infos->moves[move_idx].piece == PAWN) // edge case prom : hint ?
-	{
-		p = 'p';
-		y = infos->moves[move_idx].pgn[0] - 'a';
-		if (move_idx % 2 != 0)
-			p -= 32;
-		while (x < 7)
-		{
-			if (board[x][y] == p)
-			{
-				board[x][y] = ' ';
-				break ;
-			}
-			x++;
-		}
-	}
+	if (infos->moves[move_idx].piece == PAWN)
+		return (clean_pawn(infos, board, move_idx));
 	// Cases without any hint
 	if (!(infos->moves[move_idx].col_hint)
 		&& !(infos->moves[move_idx].row_hint))

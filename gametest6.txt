@@ -1,0 +1,19 @@
+[Event "Rated Bullet game"]
+[Site "https://lichess.org/C0Ac78vs"]
+[White "PiNiata"]
+[Black "DO"]
+[Result "0-1"]
+[UTCDate "2014.06.30"]
+[UTCTime "22:01:11"]
+[WhiteElo "1466"]
+[BlackElo "1589"]
+[WhiteRatingDiff "-8"]
+[BlackRatingDiff "+10"]
+[ECO "B32"]
+[Opening "Sicilian Defense: Loewenthal Variation"]
+[TimeControl "60+0"]
+[Termination "Normal"]
+
+1. e4 c5 2. Nf3 Nc6 3. d4 cxd4 4. Nxd4 e5 5. Nb3 a6 6. Nc3 b5 7. Nd5 Bb4+ 8. c3 Bf8 9. Be3 Nf6 10. h3 Nxe4 11. Bd3 f5 12. Bxe4 fxe4 13. O-O Be7 14. Bc5 Bxc5 15. Nxc5 d6 16. Nxe4 Be6 17. Ne3 O-O 18. Qxd6 Qxd6 19. Nxd6 e4 20. a3 Ne5 21. Nxe4 Nd3 22. Rad1 Nxb2 23. Rd2 Nc4 24. Nxc4 Bxc4 25. Nd6 Bxf1 26. Kxf1 Rad8 27. Ne4 Rxd2 28. Nxd2 Rc8 29. c4 bxc4 30. Ne4 c3 31. Nd6 c2 32. Ne4 c1=Q+ 33. Ke2 Rc2+ 34. Kf3 0-1
+
+
