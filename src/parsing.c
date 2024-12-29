@@ -478,7 +478,7 @@ move	parse_moves(char *game, int i) // cxd8=Q+ / cxd1=Q#
 
 		// opening file with game(s)
 		//gametest8 : n mal clean ? #28 / turn 15
-		fd = open("gametest+.txt", O_RDONLY); // Ajouter une option argv
+		fd = open("gametest2.txt", O_RDONLY); // Ajouter une option argv
 		//gametest1 : Q & B not cleaned / not found
 		// gametes4 endgame not detected
 		// gametest6 : segfault
