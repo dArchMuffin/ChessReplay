@@ -108,7 +108,7 @@ move	parse_moves(char *game, int i) // cxd8=Q+ / cxd1=Q#
 	start = i;
 	// printf("game[start] = %c\n", game[start]);
 	m.is_time_out = false;
-	while (game[i] != ' ')
+	while (game[i] && game[i] != ' ')
 		i++;
 	m.pgn = ft_substr(game, start, i - start);
 	len = ft_strlen(m.pgn);
@@ -142,13 +142,13 @@ move	parse_moves(char *game, int i) // cxd8=Q+ / cxd1=Q#
 			m.is_draw = true;
 		else if (game[i + 1] == '-')
 			m.is_resign = true;
-		while (game[i] != ' ') // go to end to not record more
+		while (game[i] && game[i] != ' ') // go to end to not record more
 			i++;
 	}
 	else if (game[i] == '0')
 	{
 		m.is_resign = true;
-		while (game[i] != ' ')
+		while (game[i] && game[i] != ' ')
 			i++;
 	}
 	else
@@ -219,7 +219,7 @@ move	parse_moves(char *game, int i) // cxd8=Q+ / cxd1=Q#
 	//! ? : comments
 	i = start;
 	j = 0;
-	while (i - start < len && game[i] != ' ')
+	while (game[i] && i - start < len && game[i] != ' ')
 	{
 		if (game[i] == '!' || game[i] == '?')
 		{
@@ -231,7 +231,7 @@ move	parse_moves(char *game, int i) // cxd8=Q+ / cxd1=Q#
 	m.comment[j] = '\0';
 	i = start;
 	// 2 : which piece is moving ?
-	if (game[i] >= 'a' && game[i] <= 'h')
+	if (game[i] && game[i] >= 'a' && game[i] <= 'h')
 		m.piece = PAWN;
 	else
 	{
@@ -301,7 +301,7 @@ move	parse_moves(char *game, int i) // cxd8=Q+ / cxd1=Q#
 	m.destination[2] = '\0';
 	if (m.type == NORMAL || m.type == CAPTURE)
 	{
-		while (game[i] != ' ' && game[i]) //2nd cdt = patafix
+		while (game[i] != ' ' && game[i])
 			i++;
 		// if (m.is_promotion == false)
 		// {
@@ -313,14 +313,14 @@ move	parse_moves(char *game, int i) // cxd8=Q+ / cxd1=Q#
 		m.destination[2] = '\0';
 	}
 	i = start;
-	while (game[i] != ' ')
+	while (game[i] && game[i] != ' ')
 		i++;
 	if (game[i + 1] == '{')
 	{
-		while (game[i] != '%')
+		while (game[i] && game[i] != '%')
 			i++;
 		start = i + 1;
-		while (game[i] != ']')
+		while (game[i] && game[i] != ']')
 			i++;
 		m.eval = ft_substr(game, start, i - start);
 	}
@@ -347,7 +347,7 @@ move	parse_moves(char *game, int i) // cxd8=Q+ / cxd1=Q#
 			len--;
 		nb_moves = game[len + 1] - '0';
 		len++;
-		while (ft_isdigit(game[len + 1]) == 1 && len > 0)
+		while (game[len + 1] && ft_isdigit(game[len + 1]) == 1 && len > 0)
 		{
 			nb_moves = nb_moves * 10 + game[len + 1] - '0';
 			len++;
@@ -359,7 +359,7 @@ move	parse_moves(char *game, int i) // cxd8=Q+ / cxd1=Q#
 		while (j < nb_moves * 2)
 		{
 			// moving to next move
-			while (ft_isalpha(game[i]) == 0 && game[i] != 'O')
+			while (game[i] && ft_isalpha(game[i]) == 0 && game[i] != 'O')
 			{
 				// stop for endgame
 				if ((game[i] == '1' || game[i] == '0') && (game[i + 1] == '/'
@@ -369,15 +369,15 @@ move	parse_moves(char *game, int i) // cxd8=Q+ / cxd1=Q#
 			}
 			moves[j] = parse_moves(game, i);
 			j++;
-			while (game[i] != ' ')
+			while (game[i] && game[i] != ' ')
 				i++;
 			i++;
 			if (game[i] == '{')
 			{
-				while (game[i] != '}')
+				while (game[i] && game[i] != '}')
 					i++;
 				i += 2;
-				while (game[i] != ' ')
+				while (game[i] && game[i] != ' ')
 					i++;
 			}
 		}
@@ -431,11 +431,11 @@ move	parse_moves(char *game, int i) // cxd8=Q+ / cxd1=Q#
 
 		split_headers(game, game_info);
 		i = 1;
-		while (!(game[i] == '\n' && game[i - 1] == '\n'))
+		while (game[i] && !(game[i] == '\n' && game[i - 1] == '\n'))
 			i++;
 		i++;
 		start = i;
-		while (game[i] != '\n')
+		while (game[i] && game[i] != '\n')
 			i++;
 		moves = ft_substr(game, start, i - start);
 		split_moves(moves, game_info, ft_strlen(moves));
@@ -479,10 +479,10 @@ move	parse_moves(char *game, int i) // cxd8=Q+ / cxd1=Q#
 		// opening file with game(s)
 		//gametest8 : n mal clean ? #28 / turn 15
 		fd = open("gametest2.txt", O_RDONLY); // Ajouter une option argv
-		//gametest1 : Q & B not cleaned / not found
-		// gametes4 endgame not detected
-		// gametest6 : segfault
-		// gametest8 : error cleaning queen ?
+		// gametest1 knight / bishop / rook not found ?
+		// gametest6 : knight / bishop / root not found ?
+		// gametest8 : error cleaning queen ? // #32 : infinite loop
+		// gametest9 : end not a reisgn ?
 		if (fd < 0)
 		{
 			printf("Error while opening a file\n");

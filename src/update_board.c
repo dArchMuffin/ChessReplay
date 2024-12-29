@@ -118,13 +118,13 @@ void	col_hint_case(game_info *infos, int board[8][8], int move_idx)
 		}
 		if ((infos->moves[move_idx].destination[0] - 'a') - y == 2)
 		{
-			printf("board[%d][%d] = %c\n", x + 1, y, board[x + 1][y]);
+			// printf("board[%d][%d] = %c\n", x + 1, y, board[x + 1][y]);
 			if (board[x + 1][y] == p)
 			{
 				board[x + 1][y] = ' ';
 				return ;
 			}
-			printf("board[%d][%d] = %c\n", x - 1, y, board[x - 1][y]);
+			// printf("board[%d][%d] = %c\n", x - 1, y, board[x - 1][y]);
 			if (board[x - 1][y] == p)
 			{
 				board[x - 1][y] = ' ';
@@ -149,50 +149,194 @@ void	col_hint_case(game_info *infos, int board[8][8], int move_idx)
 			x++;
 		}
 	}
-	if (infos->moves[move_idx].piece == BISHOP)
+	if (infos->moves[move_idx].piece == BISHOP) //To do & to test
 	{
 		p = 'b';
 		if (move_idx % 2 != 0)
 			p -= 32;
+		y = infos->moves[move_idx].col_hint - 'a';
+		x = 0;
+		while (x <= 7)
+		{
+			if (board[x][y] == p)
+			{
+				board[x][y] = ' ';
+				return ;
+			}
+			x++;
+		}
 	}
 	if (infos->moves[move_idx].piece == QUEEN)
 	{
 		p = 'q';
 		if (move_idx % 2 != 0)
 			p -= 32;
+				y = infos->moves[move_idx].col_hint - 'a';
+		x = 0;
+		while (x <= 7)
+		{
+			if (board[x][y] == p)
+			{
+				board[x][y] = ' ';
+				return ;
+			}
+		}
 	}
 }
 
-// edge case pawn ?
 void	row_hint_case(game_info *infos, int board[8][8], int move_idx)
 {
+	int y;
+	int x;
+	char p;
+
+	// printf("row_int case\n");
 	if (infos->moves[move_idx].piece == KNIGHT)
 	{
-		if (clean_knight('n', infos->moves[move_idx].destination[0],
-				infos->moves[move_idx].destination[1], board, move_idx) == 1)
-			printf("ERROR : KNIGHT not found !\n");
+		p = 'n';
+		if (move_idx % 2 != 0)
+			p -= 32;
+		y = infos->moves[move_idx].destination[0] - 'a';
+		x = infos->moves[move_idx].row_hint - '0' - 1;
+		if ((infos->moves[move_idx].destination[1] - '0' - 1) - x == -2)
+		{
+			// printf("board[%d][%d] = %c\n", x, y - 1, board[x][y - 1]);
+			if (board[x][y - 1] == p)
+			{
+				board[x][y - 1] = ' ';
+				return ;
+			}
+			// printf("board[%d][%d] = %c\n", x, y + 1, board[x][y + 1]);
+			if (board[x][y + 1] == p)
+			{
+				board[x][y + 1] = ' ';
+				return ;
+			}
+		}
+		if ((infos->moves[move_idx].destination[1] - '0' - 1) - x == -1)
+		{
+			// printf("board[%d][%d] = %c\n", x, y + 2, board[x][y + 2]);
+			if (board[x][y + 2] == p)
+			{
+				board[x][y + 2] = ' ';
+				return ;
+			}
+			// printf("board[%d][%d] = %c\n", x, y - 2, board[x][y- 2]);
+			if (board[x][y - 2] == p)
+			{
+				board[x][y - 2] = ' ';
+				return ;
+			}
+		}
+		if ((infos->moves[move_idx].destination[1] - '0' - 1) - x == 1)
+		{
+			// printf("board[%d][%d] = %c\n", x, y + 2, board[x][y + 2]);
+			if (board[x][y + 2] == p)
+			{
+				board[x][y + 2] = ' ';
+				return ;
+			}
+			// printf("board[%d][%d] = %c\n", x, y - 2, board[x][y - 2]);
+			if (board[x][y - 2] == p)
+			{
+				board[x][y - 2] = ' ';
+				return ;
+			}
+		}
+		if ((infos->moves[move_idx].destination[1] - '0' - 1) - x == 2)
+		{
+			// printf("board[%d][%d] = %c\n", x, y + 1, board[x][y + 1]);
+			if (board[x][y + 1] == p)
+			{
+				board[x][y + 1] = ' ';
+				return ;
+			}
+			// printf("board[%d][%d] = %c\n", x, y - 1, board[x][y - 1]);
+			if (board[x][y - 1] == p)
+			{
+				board[x][y - 1] = ' ';
+				return ;
+			}
+		}
 	}
 	if (infos->moves[move_idx].piece == ROOK)
 	{
-		if (clean_piece_in_lines('r', infos->moves[move_idx].destination[0],
-				infos->moves[move_idx].destination[1], board, move_idx) == 1)
-			printf("ERROR : ROOK not found !\n");
+		p = 'r';
+		if (move_idx % 2 != 0)
+			p -= 32;
+		y = 0;
+		x = infos->moves[move_idx].col_hint - '0' - 1;
+		while (y <= 7)
+		{
+			if (board[x][y] == p)
+			{
+				board[x][y] = ' ';
+				return ;
+			}
+			y++;
+		}
 	}
 	if (infos->moves[move_idx].piece == BISHOP)
 	{
-		if (clean_piece_in_diags('b', infos->moves[move_idx].destination[0],
-				infos->moves[move_idx].destination[1], board, move_idx) == 1)
-			printf("ERROR : BISHOP not found !\n");
+		p = 'b';
+		if (move_idx % 2 != 0)
+			p -= 32;
+		y = 0;
+		x = infos->moves[move_idx].col_hint - '0' - 1;
+		while (y <= 7)
+		{
+			if (board[x][y] == p)
+			{
+				board[x][y] = ' ';
+				return ;
+			}
+			y++;
+		}
 	}
 	if (infos->moves[move_idx].piece == QUEEN)
 	{
-		if (clean_piece_in_diags('q', infos->moves[move_idx].destination[0],
-				infos->moves[move_idx].destination[1], board, move_idx) == 1)
-			if (clean_piece_in_lines('q', infos->moves[move_idx].destination[0],
-					infos->moves[move_idx].destination[1], board,
-					move_idx) == 1)
-				printf("ERROR : QUEEN not found !\n");
+		p = 'q';
+		if (move_idx % 2 != 0)
+			p -= 32;
+		y = 0;
+		x = infos->moves[move_idx].col_hint - '0' - 1;
+		while (y <= 7)
+		{
+			if (board[x][y] == p)
+			{
+				board[x][y] = ' ';
+				return ;
+			}
+			y++;
+		}
 	}
+	// if (infos->moves[move_idx].piece == KNIGHT)
+	// {
+	// 	if (clean_knight('n', infos->moves[move_idx].destination[0],
+	// 			infos->moves[move_idx].destination[1], board, move_idx) == 1)
+	// 		printf("ERROR : KNIGHT not found !\n");
+	// }
+	// if (infos->moves[move_idx].piece == ROOK)
+	// {
+	// 	if (clean_piece_in_lines('r', infos->moves[move_idx].destination[0],
+	// 			infos->moves[move_idx].destination[1], board, move_idx) == 1)
+	// 		printf("ERROR : ROOK not found !\n");
+	// }
+	// if (infos->moves[move_idx].piece == BISHOP)
+	// {
+	// 	if (clean_piece_in_diags('b', infos->moves[move_idx].destination[0],
+	// 			infos->moves[move_idx].destination[1], board, move_idx) == 1)
+	// 		printf("ERROR : BISHOP not found !\n");
+	// }
+	// if (infos->moves[move_idx].piece == QUEEN)
+	// {
+	// 	if (clean_piece_in_diags('q', infos->moves[move_idx].destination[0],
+	// 			infos->moves[move_idx].destination[1], board, move_idx) == 1)
+	// 		if (clean_piece_in_lines('q', infos->moves[move_idx].destination[0],
+	// 				infos->moves[move_idx].destination[1], board,
+	// 				move_idx) == 1)
+	// 			printf("ERROR : QUEEN not found !\n");
+	// }
 }
 
 int	castle_cases(game_info *infos, int board[8][8], int move_idx)

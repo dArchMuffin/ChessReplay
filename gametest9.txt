@@ -1,0 +1,18 @@
+[Event "Rated Classical game"]
+[Site "https://lichess.org/852TJTCB"]
+[White "alt300"]
+[Black "reabb"]
+[Result "0-1"]
+[UTCDate "2014.06.30"]
+[UTCTime "22:10:18"]
+[WhiteElo "1700"]
+[BlackElo "1782"]
+[WhiteRatingDiff "-8"]
+[BlackRatingDiff "+8"]
+[ECO "B27"]
+[Opening "Sicilian Defense: Hyperaccelerated Dragon"]
+[TimeControl "300+8"]
+[Termination "Normal"]
+
+1. e4 { [%eval 0.17] } 1... c5 { [%eval 0.36] } 2. Nf3 { [%eval 0.38] } 2... g6 { [%eval 0.71] } 3. Bc4 { [%eval 0.55] } 3... Bg7 { [%eval 0.34] } 4. d4 { [%eval 0.46] } 4... cxd4 { [%eval 0.33] } 5. Nxd4 { [%eval 0.2] } 5... Nc6 { [%eval 0.19] } 6. c3 { [%eval -0.15] } 6... Nf6 { [%eval -0.06] } 7. Bd3 { [%eval -0.32] } 7... O-O { [%eval -0.5] } 8. O-O { [%eval -0.44] } 8... d6 { [%eval -0.13] } 9. Be3 { [%eval -0.43] } 9... e5 { [%eval -0.11] } 10. Nb3 { [%eval -0.25] } 10... Ng4 { [%eval -0.34] } 11. f3?? { [%eval -5.6] } 11... Nxe3 { [%eval -5.6] } 12. Qe2 { [%eval -5.56] } 12... Nxf1 { [%eval -5.55] } 13. Qxf1 { [%eval -5.62] } 13... a5 { [%eval -5.52] } 14. N3d2? { [%eval -6.8] } 14... Qb6+ { [%eval -7.06] } 15. Kh1?! { [%eval -7.65] } 15... Qxb2 { [%eval -7.78] } 16. Nb3 { [%eval -7.63] } 16... a4 { [%eval -7.63] } 17. N1d2? { [%eval -11.15] } 17... axb3 { [%eval -11.52] } 18. Nxb3 { [%eval -11.1] } 18... Qxc3 { [%eval -10.99] } 19. Rc1 { [%eval -10.99] } 19... Qb4 { [%eval -10.93] } 20. Qf2 { [%eval -11.22] } 20... Be6 { [%eval -11.25] } 21. f4 { [%eval -12.44] } 21... Bxb3 { [%eval -10.98] } 22. axb3 { [%eval -11.07] } 22... Qxb3 { [%eval -10.62] } 23. Rd1 { [%eval -57.64] } 23... Qxd1+ { [%eval -55.59] } 0-1
+
