@@ -23,10 +23,19 @@ typedef enum
 	CAPTURE
 }			move_type;
 
+typedef	enum
+{
+	WHITE_WIN,
+	BLACK_WIN,
+	DRAW,
+	PNEDING,
+}			result;
+
 typedef struct
 {
 	piece_type piece; // quelle piece ?
 	move_type type;   // x ou deplacement ou speciaux
+	result	res;
 	char	*pgn;
 	char	*eval;
 	char	comment[3];
@@ -39,6 +48,7 @@ typedef struct
 	bool	is_resign;
 	bool	is_time_out;
 	bool	is_promotion;
+
 	piece_type promoted;
 }			move;
 
@@ -83,5 +93,7 @@ int	clean_piece_in_diags(char p, char start_y, char start_x, int board[8][8],
 							int move_idx); // A racourcir !
 int			clean_king(char p, char start_y, char start_x, int board[8][8],
 				int move_idx);
+
+int 		endgame_check(game_info *infos, int move_idx);
 
 #endif

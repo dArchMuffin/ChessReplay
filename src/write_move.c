@@ -66,6 +66,15 @@ int	*write_move(game_info *infos, int board[8][8], int move_idx)
 		else
 			printf("\n\n\n\nDraw");
 	}
+	// Time out
+	if (infos->moves[move_idx].is_time_out == true)
+	{
+		if (move_idx % 2 == 0)
+			printf("\nBlack's time out : white win\n\n");
+		else
+			printf("\nWhite's time out : black win\n\n");
+		return (0);
+	}
 	if (move_idx % 2 == 0 && infos->moves[move_idx].is_draw != true)
 		printf("\nWhite ");
 	else if (infos->moves[move_idx].is_draw != true)
@@ -117,7 +126,7 @@ int	*write_move(game_info *infos, int board[8][8], int move_idx)
 		&& infos->moves[move_idx].is_draw != true
 		&& infos->moves[move_idx].is_promotion != true)
 		printf("moves to %s", infos->moves[move_idx].destination);
-	else if (infos->moves[move_idx].type == CAPTURE && infos->moves[move_idx].is_promotion != true)
+	else if (infos->moves[move_idx].type == CAPTURE && infos->moves[move_idx].is_promotion != true && infos->moves[move_idx].is_resign != true)
 	{
 		printf("takes ");
 		print_piece_in(board, infos->moves[move_idx].destination, move_idx);
@@ -143,14 +152,6 @@ int	*write_move(game_info *infos, int board[8][8], int move_idx)
 		else
 			printf("\nBlack win\n");
 		return (0);
-	}
-	// Time out
-	if (infos->moves[move_idx].is_time_out == true)
-	{
-		if (move_idx % 2 == 0)
-			printf("\nBlack's time out : white win");
-		else
-			printf("\nWhite's time out : black win");
 	}
 	// Comment ->fct
 	if (infos->moves[move_idx].comment)

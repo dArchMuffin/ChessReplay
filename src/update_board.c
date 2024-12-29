@@ -28,6 +28,7 @@ void	no_hint_case(game_info *infos, int board[8][8], int move_idx)
 {
 	if (infos->moves[move_idx].piece == KNIGHT)
 	{
+		// printf("no hint case : knight to clean\n");
 		if (clean_knight('n', infos->moves[move_idx].destination[0],
 				infos->moves[move_idx].destination[1], board, move_idx) == 1)
 			printf("ERROR : KNIGHT not found !\n");
@@ -103,7 +104,7 @@ void	col_hint_case(game_info *infos, int board[8][8], int move_idx)
 				return ;
 			}
 		}
-		if ((infos->moves[move_idx].destination[0] - 'a') - y == 1)
+		if ((infos->moves[move_idx].destination[0] - 'a') - y == 1) //Inverser ici ?
 		{
 			if (board[x + 2][y] == p)
 			{

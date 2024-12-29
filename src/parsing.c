@@ -108,6 +108,9 @@ move	parse_moves(char *game, int i) // cxd8=Q+ / cxd1=Q#
 	start = i;
 	// printf("game[start] = %c\n", game[start]);
 	m.is_time_out = false;
+	m.promoted = NONE;
+	m.col_hint = '\0';
+	m.row_hint = '\0';
 	while (game[i] && game[i] != ' ')
 		i++;
 	m.pgn = ft_substr(game, start, i - start);
@@ -268,16 +271,16 @@ move	parse_moves(char *game, int i) // cxd8=Q+ / cxd1=Q#
 		}
 		else if (game[i] == 'x') // If cap : hint in -1 & / or -2
 		{
-			if (ft_isdigit(game[i - 1]) == 1)
+			// printf("knight capturing detected : %s\n", m.pgn);
 			// there is at least one row hint
-			{
+			if (ft_isdigit(game[i - 1]) == 1)
 				m.row_hint = game[i - 1];
-				if (ft_islowercase(game[i - 2]) == 1) // perhaps two ?
-					m.col_hint = game[i - 2];
-			}
-			else if (ft_islowercase(game[i - 1]) == 1)
 				// If there is 1 hint, it's a col_hint
+			else if (ft_islowercase(game[i - 1]) == 1)
+			{
+				// printf("col_hint found : %c\n", game[i - 1]);
 				m.col_hint = game[i - 1];
+			}
 		}
 		else if (ft_isdigit(game[i]) == 1) // there is at least one row hint
 		{
@@ -291,6 +294,14 @@ move	parse_moves(char *game, int i) // cxd8=Q+ / cxd1=Q#
 	else
 	// Tous les autres cas on n'aura pas d'indice ? cas particulier du pion ?
 	{
+		// printf("no hint found\n");
+		// i = start;
+		// while (game[i] && game[i] != ' ')
+		// {
+		// 	write(1, &game[i], 1);
+		// 	i++;
+		// }
+		// printf("\n");
 		m.row_hint = '\0';
 		m.col_hint = '\0';
 	}
@@ -361,11 +372,11 @@ move	parse_moves(char *game, int i) // cxd8=Q+ / cxd1=Q#
 			// moving to next move
 			while (game[i] && ft_isalpha(game[i]) == 0 && game[i] != 'O')
 			{
+				i++;
 				// stop for endgame
 				if ((game[i] == '1' || game[i] == '0') && (game[i + 1] == '/'
 						|| game[i + 1] == '-'))
 					break ;
-				i++;
 			}
 			moves[j] = parse_moves(game, i);
 			j++;
@@ -396,7 +407,7 @@ move	parse_moves(char *game, int i) // cxd8=Q+ / cxd1=Q#
 		// i = 0;
 		// while (i < nb_moves * 2)
 		// {
-		// 	if ((i == 53 || i == 34))
+		// 	if ((i == nb_moves - 1))
 		// 	{
 		// 	printf("\nmoves[%d]\n", i);
 		// 	printf("type = %d\n", game_info->moves[i].type);
@@ -478,11 +489,7 @@ move	parse_moves(char *game, int i) // cxd8=Q+ / cxd1=Q#
 
 		// opening file with game(s)
 		//gametest8 : n mal clean ? #28 / turn 15
-		fd = open("gametest2.txt", O_RDONLY); // Ajouter une option argv
-		// gametest1 knight / bishop / rook not found ?
-		// gametest6 : knight / bishop / root not found ?
-		// gametest8 : error cleaning queen ? // #32 : infinite loop
-		// gametest9 : end not a reisgn ?
+		fd = open("gametest9.txt", O_RDONLY); // Ajouter une option argv
 		if (fd < 0)
 		{
 			printf("Error while opening a file\n");
