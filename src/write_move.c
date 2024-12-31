@@ -69,7 +69,7 @@ int	*write_move(game_info *infos, int board[8][8], int move_idx)
 	// Time out
 	if (infos->moves[move_idx].is_time_out == true)
 	{
-		if (move_idx % 2 == 0)
+		if (move_idx % 2 != 0) //!! paas sur
 			printf("\nBlack's time out : white win\n\n");
 		else
 			printf("\nWhite's time out : black win\n\n");

@@ -2,6 +2,7 @@
 #include <stdio.h> //libft printf
 #include <stdlib.h>
 #include <unistd.h>
+#include <time.h>
 
 int	main(int ac, char **av)
 {
@@ -11,11 +12,20 @@ int	main(int ac, char **av)
 	int			e;
 	int			move_idx;
 	int			turn;
+	int			timer;
 
-	if (ac != 1)
+	if (ac > 2) //./chess 5 1 : 1 sec timer replaying
+		timer = atoi(av[2]);
+	else
+		timer = 0;
+	if (ac > 1) // chess 5 : replay game nb 5
 		game_number = atoi(av[1]); // libft atoi
 	else
-		game_number = 0;
+	{
+		srand(time(NULL));
+		game_number = rand() % 355733;
+		printf("game #%d\n", game_number);
+	}
 	e = read_game(game_number, &game_info);
 	if (e < 0)
 	{
@@ -46,7 +56,7 @@ int	main(int ac, char **av)
 		|| game_info.moves[move_idx].is_draw == true
 		|| game_info.moves[move_idx].is_time_out == true)
 			break ;
-		// sleep(1);
+		sleep(timer);
 		move_idx++;
 		if (endgame_check(&game_info, move_idx) == 1)
 			break ;
@@ -56,7 +66,7 @@ int	main(int ac, char **av)
 		// update board
 		update_board(&game_info, board, move_idx);
 		print_board(board, &game_info);
-		// sleep(1);
+		sleep(timer);
 		move_idx++;
 	}
 	free_game_info(&game_info);

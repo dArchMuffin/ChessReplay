@@ -26,6 +26,10 @@ char	*get_game(int fd, int game_number)
 		while (1)
 		{
 			nb = read(fd, buf, BUF_SIZE);
+			if (nb == 0)
+			{
+				// printf("read() reached end of file\n");
+			}
 			buf[nb] = '\0';
 			i = 0;
 			while (buf[i] && sep / 2 != game_number)
@@ -38,20 +42,22 @@ char	*get_game(int fd, int game_number)
 					{
 						nl = false;
 						sep++;
-						printf("sep =%d\n", sep); 
+						// printf("sep =%d\n", sep); 
 					}
 					else
 						nl = true;
 				}
 				i++;
-				printf("buf[%d] = %c\n", i, buf[i]);
+				// printf("buf[%d] = %c\n", i, buf[i]);
 				if (sep / 2 == game_number)
 					break ;
 			}
+			// if (sep % 2 == 0)
+			// 	printf("games parsed : %d | game_number = %d\n", sep / 2, game_number);
 			if (sep / 2 == game_number)
 			{
 				game = ft_substr(buf, i, BUF_SIZE - i);
-				printf("game = %s\n", game);
+				// printf("game = %s\n", game);
 				break ;
 			}
 		}
@@ -524,12 +530,13 @@ move	parse_moves(char *game, int i) // cxd8=Q+ / cxd1=Q#
 
 		// opening file with game(s)
 		//gametest8 : n mal clean ? #28 / turn 15
-		fd = open("lichess_db_standard_rated_2014-07.txt", O_RDONLY); // Ajouter une option argv
+		fd = open("lichess_db_standard_rated_2014-07.txt", O_RDONLY);
 		if (fd < 0)
 		{
 			printf("Error while opening a file\n");
 			return (-1);
 		}
+		printf("searching and parsing game ...\n");
 		// getting a char * with headers and moves + filling game_info->headers
 		game = get_game(fd, game_number);
 		// spliting moves in a tab of structs inside game_info struct
