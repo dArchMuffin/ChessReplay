@@ -14,12 +14,11 @@ int	main(int ac, char **av)
 	int			turn;
 	int			timer;
 
-	if (ac > 2) //./chess 5 1 : 1 sec timer replaying
-		timer = atoi(av[2]);
-	else
-		timer = 0;
+	timer = 0;
 	if (ac > 1) // chess 5 : replay game nb 5
-		game_number = atoi(av[1]); // libft atoi
+		timer = atoi(av[1]); // libft atoi
+	if (ac > 2) //./chess 5 1 : 1 sec timer replaying
+		game_number = atoi(av[2]);
 	else
 	{
 		srand(time(NULL));

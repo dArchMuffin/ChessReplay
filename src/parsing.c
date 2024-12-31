@@ -83,13 +83,13 @@ char	*get_game(int fd, int game_number)
 				{
 					nl = false;
 					sep++;
-					printf("sep =%d\n", sep); 
+					// printf("sep =%d\n", sep); 
 				}
 				else
 					nl = true;
 			}
 			i++;
-			printf("buf[%d] = %c\n", i, buf[i]);
+			// printf("buf[%d] = %c\n", i, buf[i]);
 			if (sep == 2)
 				break ;
 		}
@@ -536,7 +536,7 @@ move	parse_moves(char *game, int i) // cxd8=Q+ / cxd1=Q#
 			printf("Error while opening a file\n");
 			return (-1);
 		}
-		printf("searching and parsing game ...\n");
+		printf("searching and parsing game ...\nmMl");
 		// getting a char * with headers and moves + filling game_info->headers
 		game = get_game(fd, game_number);
 		// spliting moves in a tab of structs inside game_info struct
