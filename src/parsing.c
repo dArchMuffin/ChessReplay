@@ -14,7 +14,9 @@ char	*get_game(int fd, int game_number)
 	int		sep;
 	char	*game;
 	int		i;
+	bool	nl;
 
+	nl = false;
 	game = NULL;
 	i = 0;
 	sep = 0;
@@ -24,18 +26,38 @@ char	*get_game(int fd, int game_number)
 		while (1)
 		{
 			nb = read(fd, buf, BUF_SIZE);
-			i = 1;
-			while (buf[i])
+			buf[nb] = '\0';
+			i = 0;
+			while (buf[i] && sep / 2 != game_number)
 			{
-				if (buf[i] == '\n' && buf[i - 1] == '\n')
-					sep++;
+				if (buf[i] != '\n')
+					nl = false;
+				else if (buf[i] == '\n')
+				{
+					if (nl == true)
+					{
+						nl = false;
+						sep++;
+						printf("sep =%d\n", sep); 
+					}
+					else
+						nl = true;
+				}
+				i++;
+				printf("buf[%d] = %c\n", i, buf[i]);
 				if (sep / 2 == game_number)
 					break ;
-				i++;
+			}
+			if (sep / 2 == game_number)
+			{
+				game = ft_substr(buf, i, BUF_SIZE - i);
+				printf("game = %s\n", game);
+				break ;
 			}
 		}
 	}
 	sep = 0;
+	nl = false;
 	// concat headers and moves in 1 char*
 	while (sep < 2)
 	{
@@ -47,13 +69,26 @@ char	*get_game(int fd, int game_number)
 		i = 0;
 		while (buf[i])
 		{
-			if (buf[i] == '\n' && buf[i - 1] == '\n')
-				sep++;
-			if (sep == 2 || !buf[i])
-				break ;
+			if (buf[i] != '\n')
+				nl = false;
+			else if (buf[i] == '\n')
+			{
+				if (nl == true)
+				{
+					nl = false;
+					sep++;
+					printf("sep =%d\n", sep); 
+				}
+				else
+					nl = true;
+			}
 			i++;
+			printf("buf[%d] = %c\n", i, buf[i]);
+			if (sep == 2)
+				break ;
 		}
 	}
+
 	// printf("game[%d] = %c\n", i, game[i]);
 	// printf("sep = %d\ngame = %s\nbuf = %s\n", sep, game, buf);
 	return (game);
@@ -489,7 +524,7 @@ move	parse_moves(char *game, int i) // cxd8=Q+ / cxd1=Q#
 
 		// opening file with game(s)
 		//gametest8 : n mal clean ? #28 / turn 15
-		fd = open("gametest9.txt", O_RDONLY); // Ajouter une option argv
+		fd = open("lichess_db_standard_rated_2014-07.txt", O_RDONLY); // Ajouter une option argv
 		if (fd < 0)
 		{
 			printf("Error while opening a file\n");

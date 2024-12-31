@@ -46,7 +46,7 @@ int	main(int ac, char **av)
 		|| game_info.moves[move_idx].is_draw == true
 		|| game_info.moves[move_idx].is_time_out == true)
 			break ;
-		sleep(1);
+		// sleep(1);
 		move_idx++;
 		if (endgame_check(&game_info, move_idx) == 1)
 			break ;
@@ -56,7 +56,7 @@ int	main(int ac, char **av)
 		// update board
 		update_board(&game_info, board, move_idx);
 		print_board(board, &game_info);
-		sleep(1);
+		// sleep(1);
 		move_idx++;
 	}
 	free_game_info(&game_info);
