@@ -33,8 +33,8 @@ typedef enum
 
 typedef struct
 {
-	piece_type piece; // quelle piece ?
-	move_type type;   // x ou deplacement ou speciaux
+	piece_type piece;
+	move_type type;
 	result		res;
 	char		*pgn;
 	char		*eval;
