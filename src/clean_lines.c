@@ -75,13 +75,11 @@ int	clean_piece_in_lines(char p, char start_y, char start_x, int board[8][8],
 
 	y = start_y - 'a';
 	x = start_x - '0' - 1;
-	// printf("x = %d | y = %d\n", x, y);
 	if (move_idx % 2 != 0)
 		p -= 32;
 	if (clean_line_col(p, y, x, board) && clean_line_row(p, y, x, board))
 		return (1);
 	else
 		return (0);
-	// printf("%c not found in lines\n", p);
 	return (1);
 }

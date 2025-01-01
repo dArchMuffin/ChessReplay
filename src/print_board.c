@@ -1,5 +1,5 @@
 #include "header.h"
-#include <stdio.h> //A VIRER !
+#include <stdio.h>
 #include <unistd.h>
 
 void	init_board(int board[8][8])

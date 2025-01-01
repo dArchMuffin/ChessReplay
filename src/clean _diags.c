@@ -79,7 +79,7 @@ int	clean_diag_bot(char p, char y, char x, int board[8][8])
 }
 
 int	clean_piece_in_diags(char p, char start_y, char start_x, int board[8][8],
-							int move_idx) // A racourcir !
+		int move_idx)
 {
 	int y;
 	int x;
@@ -89,8 +89,7 @@ int	clean_piece_in_diags(char p, char start_y, char start_x, int board[8][8],
 	if (move_idx % 2 != 0)
 		p -= 32;
 	if (clean_diag_bot(p, y, x, board) && clean_diag_top(p, y, x, board))
-		return(1);
-	else 
-		return(0);
-	// printf("%c not found in diag\n", p);
+		return (1);
+	else
+		return (0);
 }

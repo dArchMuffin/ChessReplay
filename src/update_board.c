@@ -28,7 +28,6 @@ void	no_hint_case(game_info *infos, int board[8][8], int move_idx)
 {
 	if (infos->moves[move_idx].piece == KNIGHT)
 	{
-		// printf("no hint case : knight to clean\n");
 		if (clean_knight('n', infos->moves[move_idx].destination[0],
 				infos->moves[move_idx].destination[1], board, move_idx) == 1)
 			printf("ERROR : KNIGHT not found !\n");
@@ -63,7 +62,6 @@ void	no_hint_case(game_info *infos, int board[8][8], int move_idx)
 }
 
 void	col_hint_case(game_info *infos, int board[8][8], int move_idx)
-// edge case pawn ?
 {
 	int y;
 	int x;
@@ -104,7 +102,7 @@ void	col_hint_case(game_info *infos, int board[8][8], int move_idx)
 				return ;
 			}
 		}
-		if ((infos->moves[move_idx].destination[0] - 'a') - y == 1) //Inverser ici ?
+		if ((infos->moves[move_idx].destination[0] - 'a') - y == 1)
 		{
 			if (board[x + 2][y] == p)
 			{
@@ -150,7 +148,7 @@ void	col_hint_case(game_info *infos, int board[8][8], int move_idx)
 			x++;
 		}
 	}
-	if (infos->moves[move_idx].piece == BISHOP) //To do & to test
+	if (infos->moves[move_idx].piece == BISHOP)
 	{
 		p = 'b';
 		if (move_idx % 2 != 0)
@@ -191,7 +189,6 @@ void	row_hint_case(game_info *infos, int board[8][8], int move_idx)
 	int x;
 	char p;
 
-	// printf("row_int case\n");
 	if (infos->moves[move_idx].piece == KNIGHT)
 	{
 		p = 'n';
@@ -311,33 +308,6 @@ void	row_hint_case(game_info *infos, int board[8][8], int move_idx)
 			y++;
 		}
 	}
-	// if (infos->moves[move_idx].piece == KNIGHT)
-	// {
-	// 	if (clean_knight('n', infos->moves[move_idx].destination[0],
-	// 			infos->moves[move_idx].destination[1], board, move_idx) == 1)
-	// 		printf("ERROR : KNIGHT not found !\n");
-	// }
-	// if (infos->moves[move_idx].piece == ROOK)
-	// {
-	// 	if (clean_piece_in_lines('r', infos->moves[move_idx].destination[0],
-	// 			infos->moves[move_idx].destination[1], board, move_idx) == 1)
-	// 		printf("ERROR : ROOK not found !\n");
-	// }
-	// if (infos->moves[move_idx].piece == BISHOP)
-	// {
-	// 	if (clean_piece_in_diags('b', infos->moves[move_idx].destination[0],
-	// 			infos->moves[move_idx].destination[1], board, move_idx) == 1)
-	// 		printf("ERROR : BISHOP not found !\n");
-	// }
-	// if (infos->moves[move_idx].piece == QUEEN)
-	// {
-	// 	if (clean_piece_in_diags('q', infos->moves[move_idx].destination[0],
-	// 			infos->moves[move_idx].destination[1], board, move_idx) == 1)
-	// 		if (clean_piece_in_lines('q', infos->moves[move_idx].destination[0],
-	// 				infos->moves[move_idx].destination[1], board,
-	// 				move_idx) == 1)
-	// 			printf("ERROR : QUEEN not found !\n");
-	// }
 }
 
 int	castle_cases(game_info *infos, int board[8][8], int move_idx)
@@ -383,16 +353,10 @@ int	promote_and_clean(game_info * infos, int board[8][8], int move_idx)
 	int x;
 	int y;
 
-	if (infos->moves[move_idx].is_promotion == true) //Clean but not put in
+	if (infos->moves[move_idx].is_promotion == true)
 	{
 		if (move_idx % 2 == 0)
 		{
-			//Cleaning pawn in pgn[1] / pgn[0] - 1
-
-			// printf("board[%d - 1][%d] = %c\n", x, y, board[x - 1][y]);
-
-			//putting promoted piece in pgn[1] pgn[0]
-			// printf("dest to print = %d%d | board[%d][%d] = %c\n", infos->moves[move_idx].pgn[1] - '0' - 1, infos->moves[move_idx].pgn[0] - 'a', infos->moves[move_idx].pgn[1] - '0' - 1, infos->moves[move_idx].pgn[0] - 'a', board[infos->moves[move_idx].pgn[1] - '0' - 1][infos->moves[move_idx].pgn[0] - 'a']);
 			if (infos->moves[move_idx].type == CAPTURE)
 			{
 				x = infos->moves[move_idx].destination[1] - '0' - 1;
@@ -420,11 +384,8 @@ int	promote_and_clean(game_info * infos, int board[8][8], int move_idx)
 				board[infos->moves[move_idx].pgn[1] - '0' - 1][infos->moves[move_idx].pgn[0] - 'a'] = 'q';	
 			}
 		}
-		else //Black to test
+		else
 		{
-			//Cleaning pawn in pgn[1] / pgn[0] + 1
-			//putting promoted piece in pgn[1] pgn[0]
-			// printf("\ndest to print = %d%d | board[%d][%d] = %c\n", infos->moves[move_idx].pgn[1] - '0' - 1, infos->moves[move_idx].pgn[0] - 'a', infos->moves[move_idx].pgn[1] - '0' - 1, infos->moves[move_idx].pgn[0] - 'a', board[infos->moves[move_idx].pgn[1] - '0' - 1][infos->moves[move_idx].pgn[0] - 'a']);
 			if (infos->moves[move_idx].type == CAPTURE)
 			{
 				x = infos->moves[move_idx].destination[1] - '0' - 1;

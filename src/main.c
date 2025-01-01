@@ -47,7 +47,6 @@ int	main(int ac, char **av)
 		if (endgame_check(&game_info, move_idx) == 1)
 			break ;
 		write_move(&game_info, board, move_idx);
-		// update board : update board with last move
 		update_board(&game_info, board, move_idx);
 		print_board(board, &game_info);
 		if (game_info.moves[move_idx].is_mate == true 
@@ -62,7 +61,6 @@ int	main(int ac, char **av)
 		write_move(&game_info, board, move_idx);
 			if (game_info.moves[move_idx].is_time_out == true)
 			break ;
-		// update board
 		update_board(&game_info, board, move_idx);
 		print_board(board, &game_info);
 		sleep(timer);

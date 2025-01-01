@@ -47,18 +47,11 @@ void	print_piece_in(int board[8][8], char d[3], int move_idx) // To fix
 		printf("in %c%c", dest[0] + 'a', dest[1] + 2 + '0');
 	else
 		printf("in %c%c", dest[0] + 'a', dest[1] + 1 + '0');
-	// else
-	// printf("ERROR : [board[6][5] = %c | dest[1] = %d | dest[0] = %d]",
-	// board[6][5], dest[1] - '0' - 1, dest[0] - 'a');
 }
 
-// Renvoyer les coord de la case d'origine de la piece ?
 int	*write_move(game_info *infos, int board[8][8], int move_idx)
-// Revoir le int move_idx
 {
 	int i;
-	// move_idx of player's move ->fct ?
-	// Draw
 	if (infos->moves[move_idx].is_draw == true)
 	{
 		if (move_idx % 2 == 0)
@@ -66,7 +59,6 @@ int	*write_move(game_info *infos, int board[8][8], int move_idx)
 		else
 			printf("\n\n\n\nDraw");
 	}
-	// Time out
 	if (infos->moves[move_idx].is_time_out == true)
 	{
 		if (move_idx % 2 != 0) //!! paas sur
@@ -79,8 +71,6 @@ int	*write_move(game_info *infos, int board[8][8], int move_idx)
 		printf("\nWhite ");
 	else if (infos->moves[move_idx].is_draw != true)
 		printf("\n\n\n\n\nBlack ");
-	// endgame draw
-	// endgame resign
 	if (infos->moves[move_idx].is_resign == true
 		&& infos->moves[move_idx].is_mate == false)
 	{
@@ -89,12 +79,10 @@ int	*write_move(game_info *infos, int board[8][8], int move_idx)
 		else
 			printf("resign : white win");
 	}
-	// castle case
 	if (infos->moves[move_idx].type == SHORT_CASTLE)
 		printf("short castle");
 	if (infos->moves[move_idx].type == LONG_CASTLE)
 		printf("long castle");
-	//promotion //to test : capture, check, mate ...
 	if (infos->moves[move_idx].is_promotion == true)
 	{
 		if (infos->moves[move_idx].type == CAPTURE)
@@ -117,10 +105,8 @@ int	*write_move(game_info *infos, int board[8][8], int move_idx)
 		else if (infos->moves[move_idx].promoted == QUEEN)
 			printf("queen");
 	}
-	// piece to move
 	if (infos->moves[move_idx].is_promotion != true)
 		print_piece(infos, move_idx);
-	// type of action
 	if (infos->moves[move_idx].type == NORMAL
 		&& infos->moves[move_idx].is_resign != true
 		&& infos->moves[move_idx].is_draw != true
@@ -137,7 +123,6 @@ int	*write_move(game_info *infos, int board[8][8], int move_idx)
 		&& infos->moves[move_idx].is_draw != true
 		&& infos->moves[move_idx].is_promotion != true)
 		printf("error in type\n");
-	// check / comment / evals
 	if (infos->moves[move_idx].is_check == true)
 		printf(". Check !");
 	else if (infos->moves[move_idx].is_mate == true)
@@ -153,7 +138,6 @@ int	*write_move(game_info *infos, int board[8][8], int move_idx)
 			printf("\nBlack win\n");
 		return (0);
 	}
-	// Comment ->fct
 	if (infos->moves[move_idx].comment)
 	{
 		printf("\n");
@@ -183,7 +167,6 @@ int	*write_move(game_info *infos, int board[8][8], int move_idx)
 	}
 	else
 		printf("\n");
-	// Evals
 	if (infos->moves[move_idx].eval)
 		printf("\t%s", infos->moves[move_idx].eval);
 	printf("\n\n");

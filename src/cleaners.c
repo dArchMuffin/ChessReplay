@@ -1,7 +1,6 @@
 #include "header.h"
 #include <stdio.h> //libft
 
-// invalid read of size ?
 int	clean_king(char p, char start_y, char start_x, int board[8][8],
 		int move_idx)
 {
@@ -49,13 +48,11 @@ void clean_pawn(game_info *infos, int board[8][8], int move_idx)
 	//prise en passant
 	if (board[x][y] == ' ' && (x == 2 || x == 5))
 	{
-		//exd6 : clean e5 ET d5
 		if (move_idx % 2 == 0)
 		{
 			board[x - 1][infos->moves[move_idx].pgn[0] - 'a'] = ' ';
 			board[x - 1][y] = ' ';
 		}
-		//axb3 clean a4 ET b4
 		else 
 		{
 			board[x + 1][infos->moves[move_idx].pgn[0] - 'a'] = ' ';
@@ -63,12 +60,9 @@ void clean_pawn(game_info *infos, int board[8][8], int move_idx)
 		}
 		return ;
 	}
-	//move ou prise avec double pion
 	else 
 	{
-		//Gérer en premier si le pion fait un grand saut ou pas
 		y = infos->moves[move_idx].pgn[0] - 'a';
-		//exd5 : clean e4 //e5
 		if (move_idx % 2 == 0)
 		{
 			if (board[x - 1][y] == ' ')
@@ -76,7 +70,6 @@ void clean_pawn(game_info *infos, int board[8][8], int move_idx)
 			else 
 				board[x - 1][y] = ' ';
 		}
-		//dxe4 : clean d5
 		else
 			if (board[x + 1][y] == ' ')
 				board[x + 2][y] = ' ';
@@ -94,23 +87,15 @@ void	clean_origin(game_info *infos, int board[8][8], int move_idx)
 
 	if (infos->moves[move_idx].piece == PAWN)
 		return (clean_pawn(infos, board, move_idx));
-	// Cases without any hint
 	if (!(infos->moves[move_idx].col_hint)
 		&& !(infos->moves[move_idx].row_hint))
 		return (no_hint_case(infos, board, move_idx));
-	// Si double hint //TODO !
 	if (infos->moves[move_idx].col_hint && infos->moves[move_idx].row_hint)
 		board[infos->moves[move_idx].col_hint][infos->moves[move_idx].row_hint] = ' ';
-	// Si hint col //To do !
 	else if (infos->moves[move_idx].col_hint)
 		return (col_hint_case(infos, board, move_idx));
-	// si hint row
 	else if (infos->moves[move_idx].row_hint)
 	{
 		return (row_hint_case(infos, board, move_idx));
-		// Chercher un p dans board[?][row_hint]
-		// ori[0] = y
-		// ori[1] = row_hint
-		// board[y][x] = ' ';
 	}
 }

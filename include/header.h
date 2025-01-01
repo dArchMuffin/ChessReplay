@@ -73,6 +73,8 @@ int			ft_islowercase(int c);
 // Parsing
 int			read_game(int game_number, game_info *infos);
 void		free_game_info(game_info *game_info);
+move	parse_moves(char *game, int i);
+
 // Board
 void		init_board(int board[8][8]);
 void		print_board(int board[8][8], game_info *infos);
