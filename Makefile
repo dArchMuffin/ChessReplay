@@ -10,7 +10,7 @@ VAL=valgrind --leak-check=full --track-origins=yes ./chess | grep "^=="
 
 $(NAME): $(OBJS)
 	$(GCC) $(SRC) $(FLAGS) -g -o $(NAME)
-	$(EXEC)
+	# $(EXEC)
 	#$(VAL)
 
 all: $(NAME) 

@@ -281,7 +281,7 @@ int	read_game(int game_number, game_info *game_info)
 	char *game;
 	int nl;
 
-	fd = open("gametest9.txt", O_RDONLY);
+	fd = open("gametest1.txt", O_RDONLY);
 	if (fd < 0)
 	{
 		printf("Error while opening a file\n");
