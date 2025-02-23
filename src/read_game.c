@@ -26,7 +26,7 @@ char	*get_game(int fd, int game_number)
 		{
 			nb = read(fd, buf, BUF_SIZE);
 			if (nb == 0)
-				printf("read() reached end of file\n");
+				printf("read() reached end of file\n"); break;
 			buf[nb] = '\0';
 			i = 0;
 			while (buf[i] && sep / 2 != game_number)
@@ -281,7 +281,7 @@ int	read_game(int game_number, game_info *game_info)
 	char *game;
 	int nl;
 
-	fd = open("lichess_db_standard_rated_2014-07.txt", O_RDONLY);
+	fd = open("gametest9.txt", O_RDONLY);
 	if (fd < 0)
 	{
 		printf("Error while opening a file\n");
